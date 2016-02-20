@@ -1,9 +1,44 @@
 <html>
+
 <head>
+  <link rel='stylesheet' href='style.css' />
   <!--add scripts here-->
 </head>
 
 </html>
+
 <body>
-  <h1>Hello, Spotify!</h1>
+
+  <h1 id='title'>Musical Game of Life</h1>
+
+  <main>
+    <section class='wrapper'>
+      <div id='size-selector'>
+        <form>
+          <p>Board Size</p>
+          <select id='column-size'>
+            <option value="8">8</option>
+            <option value="16">16</option>
+            <option value="24">24</option>
+            <option value="32">32</option>
+            <option value="40">40</option>
+            <option value="48">48</option>
+          </select>
+
+          <p>x</p>
+
+          <select id='row-size'>
+            <option value="8">8</option>
+            <option value="16">16</option>
+            <option value="24">24</option>
+            <option value="32">32</option>
+            <option value="40">40</option>
+            <option value="48">48</option>
+          </select>
+        </form>
+      </div>
+      <div id='upload'>
+        <p>Upload a Pattern</p>
+      </div>
+  </main>
 </body>
