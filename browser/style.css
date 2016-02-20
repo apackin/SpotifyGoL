@@ -389,12 +389,20 @@ main {
   text-align: center;
   text-transform: uppercase; }
 
-#size-selector * {
-  display: inline-block; }
-#size-selector select {
-  -webkit-appearance: none;
-  background: white;
-  padding: 10px;
-  text-align: center; }
+#size-selector {
+  float: left; }
+  #size-selector * {
+    display: inline-block; }
+  #size-selector select {
+    -webkit-appearance: none;
+    background: white;
+    padding: 10px;
+    text-align: center; }
+
+#config {
+  clear: both; }
+
+#upload {
+  float: right; }
 
 /*# sourceMappingURL=style.css.map */
