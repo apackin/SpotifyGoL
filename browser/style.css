@@ -369,7 +369,8 @@ body {
 
 main {
   background: #F6F6F6;
-  padding: 20px 0; }
+  padding: 20px 0;
+  min-height: 500px; }
 
 .wrapper {
   max-width: 95%;
@@ -391,8 +392,6 @@ main {
 
 #size-selector {
   float: left; }
-  #size-selector * {
-    display: inline-block; }
   #size-selector select {
     -webkit-appearance: none;
     background: white;
@@ -401,8 +400,14 @@ main {
 
 #config {
   clear: both; }
+  #config * {
+    display: inline-block; }
 
 #upload {
   float: right; }
+  #upload p {
+    padding-right: 30px; }
+  #upload input[type='file'] {
+    width: 300px; }
 
 /*# sourceMappingURL=style.css.map */
