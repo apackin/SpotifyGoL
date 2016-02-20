@@ -64,9 +64,46 @@
 					keys.triggerAttackRelease(noteNames[i], "32n", time);
 				}
 			}
-			if(col===15) matrix1.life();	
+			if(col===15) {matrix1.life(); bassFunc(); }	
+
 		}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
+		/*
+		 BASS
+		//  */
+		var bass = new Tone.MonoSynth({
+			"volume" : -10,
+			"envelope" : {
+				"attack" : 0.1,
+				"decay" : 0.3,
+				"release" : 2,
+			},
+			"filterEnvelope" : {
+				"attack" : 0.001,
+				"decay" : 0.01,
+				"sustain" : 0.5,
+				"baseFrequency" : 400,
+				"octaves" : 2.6
+			}
+		}).toMaster();
+
+
+		var notes = ["A","B","C","D","E","F","G"];
+		var bassNotes = ["C2", ["C3", ["C3", "D2"]], "E2", ["D2", "A1"]];
+
+		bassFunc = function() {
+			var now = Tone.context.currentTime;
+			var bassPart = new Tone.Sequence(function(time, note){
+				bass.triggerAttackRelease(note, "16n", time);
+			}, bassNotes).start().stop(now+"1m");
+
+		}
+
+
+
+		// A-G
+		
+		// option # or 
 
 
 		/*
@@ -86,9 +123,9 @@
 		}, "2n").start("2m");
 		
 
-		// /*
-		//  SNARE
-		//  */
+		// // /*
+		// //  SNARE
+		// //  */
 		var snare = new Tone.NoiseSynth({
 			"volume" : -5,
 			"envelope" : {
@@ -132,30 +169,6 @@
 		// pianoPart.humanize = true;
 
 
-		/*
-		 BASS
-		//  */
-		var bass = new Tone.MonoSynth({
-			"volume" : -10,
-			"envelope" : {
-				"attack" : 0.1,
-				"decay" : 0.3,
-				"release" : 2,
-			},
-			"filterEnvelope" : {
-				"attack" : 0.001,
-				"decay" : 0.01,
-				"sustain" : 0.5,
-				"baseFrequency" : 200,
-				"octaves" : 2.6
-			}
-		}).toMaster();
-
-		var bassPart = new Tone.Sequence(function(time, note){
-			bass.triggerAttackRelease(note, "16n", time);
-		}, ["C2", ["C3", ["C3", "D2"]], "E2", ["D2", "A1"]]).start("1m");
-
-		bassPart.probability = 0.9;
 
 		//set the transport 
 		Tone.Transport.bpm.value = 90;
