@@ -1,0 +1,29 @@
+{
+  "name": "spotify-gol",
+  "version": "1.0.0",
+  "description": "This is our Spotify hackathon file.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apackin/SpotifyGoL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/apackin/SpotifyGoL/issues"
+  },
+  "homepage": "https://github.com/apackin/SpotifyGoL#readme",
+  "dependencies": {
+    "babel": "^6.5.2",
+    "body-parser": "^1.15.0",
+    "chalk": "^1.1.1",
+    "express": "^4.13.4",
+    "lodash": "^4.5.0",
+    "path": "^0.12.7",
+    "tone": "^0.6.1"
+  }
+}
