@@ -65,24 +65,28 @@
   var numActiveCells = 0;
 		//setup a polyphonic sampler
 		var keys = new Tone.PolySynth(4, Tone.Sampler, {
-			"A" : "./audio/casio/A1.mp3",
+			// "A" : "./audio/casio/A1.mp3",
 			"A#" : "./audio/casio/As1.mp3",
-			"A2" : "./audio/casio/A2.mp3",
+			// "A2" : "./audio/casio/A2.mp3",
 			"C" : "./audio/casio/C2.mp3",
-			"C#" : "./audio/casio/Cs2.mp3",
-			"D" : "./audio/casio/D2.mp3",
+			// "C#" : "./audio/casio/Cs2.mp3",
+			// "D" : "./audio/casio/D2.mp3",
 			"D#" : "./audio/casio/Ds2.mp3",
-			"E" : "./audio/casio/E2.mp3",
-			"F" : "./audio/casio/F2.mp3",
-			"F#" : "./audio/casio/Fs2.mp3",
+			// "E" : "./audio/casio/E2.mp3",
+			// "F" : "./audio/casio/F2.mp3",
+			// "F#" : "./audio/casio/Fs2.mp3",
 			"G" : "./audio/casio/G2.mp3",
-			"G#" : "./audio/casio/Gs1.mp3",
+			// "G#" : "./audio/casio/Gs1.mp3",
+			"A#" : "./audio/casio/As1.mp3",
+			"C" : "./audio/casio/C2.mp3",
+			"D#" : "./audio/casio/Ds2.mp3",
+			"G" : "./audio/casio/G2.mp3",
 		}, {
 			"volume" : 6,
 		}).toMaster();
 		// var keys = new Tone.PolySynth(4, Tone.SimpleSynth).toMaster();
 		//the notes
-		var noteNames = ["C", "D#", "G", "C2", "C", "D#", "G", "C"];
+		var noteNames = ["C", "D#", "G", "A#", "C", "D#", "G", "A#"];
 		// var noteNames = ["F#3", "E3", "C#3", "A3"];
 
 
@@ -96,13 +100,26 @@
 				}
 			}
 			if(col===15) {
+				
 				matrix1.life();
-				bassFunc();
+				console.log(Tone.Transport.bpm.value);
+
 				if (numActiveCells > 25) {
 					bassDropFunc(); 
 				} else {
-				Tone.Transport.bpm.value = 100+(50*(numActiveCells/64))
+					bassFunc();
+				// TODO should we do bassFunc if we're dopping the base?
 				}
+
+
+				if (Tone.Transport.bpm.value<140){
+				Tone.Transport.bpm.value += (5*(numActiveCells/64))
+					if (Tone.Transport.bpm.value>105){
+						// TODO make a lot of cells alive at random
+					}
+				} 
+
+
 				numActiveCells= 0;
 			}	
 
@@ -149,12 +166,12 @@
 		}
 
 		bassDropFunc = function() {
-			Tone.Transport.bpm.value = 125;
 			bassPart.at(0, ["C2", "C3", "C2", "C2"]);
 			bassPart.at(1, ["D2", "E2", "D2", "D2"]);
 			bassPart.at(2, ["C2", "C1", "C1", "C1"]);
 			bassPart.at(3, ["B1", "A1", "B1", "B1"]);
 			blinkForTime(2500);
+			Tone.Transport.bpm.value = 120;
 			funcHat();
 		}
 
@@ -290,52 +307,50 @@
 		}, [1, [1, [null, 0.3]], 1, [1, [null, 0.5]], 1, 1, 1, [1, [null, 0.8]]], "2n").start(0);
 		
 		// BASS
-		var bass2 = new Tone.SimpleFM({
-			"volume" : 5,
-			"harmonicity" : 1,
-			"modulationIndex" : 3.5,
-			"carrier" : {
-				"oscillator" : {
-					"type" : "custom",
-					"partials" : [0, 1, 0, 2]
-				},
-				"envelope" : {
-					"attack" : 0.08,
-					"decay" : 0.3,
-					"sustain" : 0,
-				},
-			},
-			"modulator" : {
-				"oscillator" : {
-					"type" : "square"
-				},
-				"envelope" : {
-					"attack" : 0.1,
-					"decay" : 0.2,
-					"sustain" : 0.3,
-					"release" : 0.01
-				},
-			}
-		}).toMaster();
+		// var bass2 = new Tone.SimpleFM({
+		// 	"volume" : 5,
+		// 	"harmonicity" : 1,
+		// 	"modulationIndex" : 3.5,
+		// 	"carrier" : {
+		// 		"oscillator" : {
+		// 			"type" : "custom",
+		// 			"partials" : [0, 1, 0, 2]
+		// 		},
+		// 		"envelope" : {
+		// 			"attack" : 0.08,
+		// 			"decay" : 0.3,
+		// 			"sustain" : 0,
+		// 		},
+		// 	},
+		// 	"modulator" : {
+		// 		"oscillator" : {
+		// 			"type" : "square"
+		// 		},
+		// 		"envelope" : {
+		// 			"attack" : 0.1,
+		// 			"decay" : 0.2,
+		// 			"sustain" : 0.3,
+		// 			"release" : 0.01
+		// 		},
+		// 	}
+		// }).toMaster();
 
 
-		var bassPart2 = new Tone.Part(function(time, event){
-			if (Math.random() < event.prob){
-				bass2.triggerAttackRelease(event.note, event.dur, time);
-			}
-		}, [{time : "0:0", note : "C2", dur : "4n + 8n", prob: 1}, {time : "0:2", note : "C2", dur : "8n", prob : 0.6}, 
-			{time : "0:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "0:2 + 4t*2", note : "C2", dur : "8n", prob : 0.9},
-			{time : "1:0", note : "C2", dur : "4n + 8n", prob : 1}, {time : "1:2", note : "C2", dur : "8n", prob : 0.6}, 
-			{time : "1:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "1:2 + 4t*2", note : "E2", dur : "8n", prob : 0.9},
-			{time : "2:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "2:2", note : "F2", dur : "8n", prob : 0.6}, 
-			{time : "2:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "2:2 + 4t*2", note : "F2", dur : "8n", prob : 0.9},
-			{time : "3:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "3:2", note : "F2", dur : "8n", prob : 0.6}, 
-			{time : "3:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "3:2 + 4t*2", note : "B1", dur : "8n", prob : 0.9}]).start(0);
+		// var bassPart2 = new Tone.Part(function(time, event){
+		// 	if (Math.random() < event.prob){
+		// 		bass2.triggerAttackRelease(event.note, event.dur, time);
+		// 	}
+		// }, [{time : "0:0", note : "C2", dur : "4n + 8n", prob: 1}, {time : "0:2", note : "C2", dur : "8n", prob : 0.6}, 
+		// 	{time : "0:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "0:2 + 4t*2", note : "C2", dur : "8n", prob : 0.9},
+		// 	{time : "1:0", note : "C2", dur : "4n + 8n", prob : 1}, {time : "1:2", note : "C2", dur : "8n", prob : 0.6}, 
+		// 	{time : "1:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "1:2 + 4t*2", note : "E2", dur : "8n", prob : 0.9},
+		// 	{time : "2:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "2:2", note : "F2", dur : "8n", prob : 0.6}, 
+		// 	{time : "2:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "2:2 + 4t*2", note : "F2", dur : "8n", prob : 0.9},
+		// 	{time : "3:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "3:2", note : "F2", dur : "8n", prob : 0.6}, 
+		// 	{time : "3:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "3:2 + 4t*2", note : "B1", dur : "8n", prob : 0.9}]).start(0);
 
-		bassPart2.loop = true;
-		bassPart2.loopEnd = "4m";
-
-		Tone.Transport.bpm.value = 125;
+		// bassPart2.loop = true;
+		// bassPart2.loopEnd = "4m";
 	}
 
 	</script>
@@ -351,15 +366,15 @@
 
 		}
 		$(function(){
-			new Interface.Slider({
-				name : "BPM",
-				min : 80,
-				max : 200,
-				value : Tone.Transport.bpm.value,
-				drag : function(val){
-					Tone.Transport.bpm.value = val;
-				}
-			});
+			// new Interface.Slider({
+			// 	name : "BPM",
+			// 	min : 80,
+			// 	max : 200,
+			// 	value : Tone.Transport.bpm.value,
+			// 	drag : function(val){
+			// 		Tone.Transport.bpm.value = val;
+			// 	}
+			// });
 			new Interface.Button({
 				text : "Start",
 				activeText : "Stop",
