@@ -25,8 +25,8 @@ $(function(){
 	}
 	$("<div>")
 		.attr("id", "Examples")
-		.attr("title", "examples")
-		.html("<a href='./index.html'>examples</a>")
+		// .attr("title", "examples")
+		// .html("<a href='./index.html'>examples</a>")
 		.appendTo(topbar);
 	//mobile start
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
