@@ -19,6 +19,13 @@ html, body {
  *  TOP BAR
  *  
  */
+
+/*canvas#matrix1.nx {
+
+  width: 1000px !important;
+  height: 600px !important;
+}*/
+
 #TopBar {
   background-color: black;
   height: 35px;
