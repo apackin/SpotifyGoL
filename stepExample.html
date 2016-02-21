@@ -66,19 +66,23 @@
 		//setup a polyphonic sampler
 		var keys = new Tone.PolySynth(4, Tone.Sampler, {
 			"A" : "./audio/casio/A1.mp3",
+			"A#" : "./audio/casio/As1.mp3",
+			"A2" : "./audio/casio/A2.mp3",
+			"C" : "./audio/casio/C2.mp3",
 			"C#" : "./audio/casio/Cs2.mp3",
+			"D" : "./audio/casio/D2.mp3",
+			"D#" : "./audio/casio/Ds2.mp3",
 			"E" : "./audio/casio/E2.mp3",
+			"F" : "./audio/casio/F2.mp3",
 			"F#" : "./audio/casio/Fs2.mp3",
-			"A" : "./audio/casio/A1.mp3",
-			"C#" : "./audio/casio/Cs2.mp3",
-			"E" : "./audio/casio/E2.mp3",
-			"F#" : "./audio/casio/Fs2.mp3",
+			"G" : "./audio/casio/G2.mp3",
+			"G#" : "./audio/casio/Gs1.mp3",
 		}, {
 			"volume" : 6,
 		}).toMaster();
 		// var keys = new Tone.PolySynth(4, Tone.SimpleSynth).toMaster();
 		//the notes
-		var noteNames = ["F#", "E", "C#", "A", "F#", "E", "C#", "A"];
+		var noteNames = ["C", "D#", "G", "C2", "C", "D#", "G", "C"];
 		// var noteNames = ["F#3", "E3", "C#3", "A3"];
 
 
@@ -108,7 +112,7 @@
 		 BASS
 		//  */
 		var bass = new Tone.MonoSynth({
-			"volume" : -10,
+			"volume" : -6,
 			"envelope" : {
 				"attack" : 0.1,
 				"decay" : 0.3,
@@ -118,7 +122,7 @@
 				"attack" : 0.001,
 				"decay" : 0.01,
 				"sustain" : 0.5,
-				"baseFrequency" : 400,
+				"baseFrequency" : 100,
 				"octaves" : 2.6
 			}
 		}).toMaster();
@@ -150,7 +154,8 @@
 			bassPart.at(1, ["D2", "E2", "D2", "D2"]);
 			bassPart.at(2, ["C2", "C1", "C1", "C1"]);
 			bassPart.at(3, ["B1", "A1", "B1", "B1"]);
-			blinkForTime(5000);
+			blinkForTime(2500);
+			funcHat();
 		}
 
 		/*
@@ -200,135 +205,138 @@
 
 	//and a compressor
 	
-	var drumCompress = new Tone.Compressor({
-		"threshold" : -30,
-		"ratio" : 6,
-		"attack" : 0.3,
-		"release" : 0.1
-	}).toMaster();
+	var funcHat = function() {
+		var drumCompress = new Tone.Compressor({
+			"threshold" : -30,
+			"ratio" : 6,
+			"attack" : 0.3,
+			"release" : 0.1
+		}).toMaster();
 
-	var distortion = new Tone.Distortion({
-		"distortion" : 0.4,
-		"wet" : 0.4
-	});
+		var distortion = new Tone.Distortion({
+			"distortion" : 0.4,
+			"wet" : 0.4
+		});
 
-	//hats
-	var hats = new Tone.Sampler("./audio/505/hh.mp3", {
-		"volume" : 2,
-		"envelope" : {
-			"attack" : 0.001,
-			"decay" : 0.02,
-			"sustain" : 0.01,
-			"release" : 0.01
-		},
-		"filterEnvelope" : {
-			"attack" : 0.001,
-			"decay" : 0.02,
-			"sustain" : 1,
-			"baseFrequency" : 6000,
-			"octaves" : -3.3
-		},
-		"filter" : {
-			"type" : "highpass"
-		}
-	}).chain(distortion, drumCompress);
-
-	var hatsLoop = new Tone.Loop({
-		"callback" : function(time){
-			hats.triggerAttackRelease(0, "8n", time);
-		},
-		"interval" : "16n",
-		"probability" : 0.8
-	}).start("1m");
-
-	//SNARE PART
-	var snare2 = new Tone.Sampler("./audio/505/snare.mp3", {
-		"volume" : 2,
-		"envelope" : {
-			"attack" : 0.01,
-			"decay" : 0.05,
-			"sustain" : 0
-		},
-		"filterEnvelope" : {
-			"attack" : 0.001,
-			"decay" : 0.01,
-			"sustain" : 0,
-			"baseFrequency" : 3000,
-			"octaves" : 2
-		},
-	}).chain(distortion, drumCompress);
-
-	var snarePart2 = new Tone.Sequence(function(time, velocity){
-		snare2.triggerAttackRelease(0, "8n", time, velocity);
-	}, [null, 1, null, [1, 0.3]]).start(0);
-
-	var kick2 = new Tone.DrumSynth({
-		"volume" : 2,
-		"pitchDecay" : 0.01,
-		"octaves" : 6,
-		"oscillator" : {
-			"type" : "square4"
-		},
-		"envelope" : {
-			"attack" : 0.001,
-			"decay" : 0.2,
-			"sustain" : 0
-		}
-	}).connect(drumCompress);
-
-	var kickPart2 = new Tone.Sequence(function(time, probability){
-		if (Math.random() < probability){
-			kick2.triggerAttack("C1", time);
-		}
-	}, [1, [1, [null, 0.3]], 1, [1, [null, 0.5]], 1, 1, 1, [1, [null, 0.8]]], "2n").start(0);
-	
-	// BASS
-	var bass2 = new Tone.SimpleFM({
-		"volume" : 5,
-		"harmonicity" : 1,
-		"modulationIndex" : 3.5,
-		"carrier" : {
-			"oscillator" : {
-				"type" : "custom",
-				"partials" : [0, 1, 0, 2]
-			},
+		//hats
+		var hats = new Tone.Sampler("./audio/505/hh.mp3", {
+			"volume" : 2,
 			"envelope" : {
-				"attack" : 0.08,
-				"decay" : 0.3,
-				"sustain" : 0,
-			},
-		},
-		"modulator" : {
-			"oscillator" : {
-				"type" : "square"
-			},
-			"envelope" : {
-				"attack" : 0.1,
-				"decay" : 0.2,
-				"sustain" : 0.3,
+				"attack" : 0.001,
+				"decay" : 0.02,
+				"sustain" : 0.01,
 				"release" : 0.01
 			},
-		}
-	}).toMaster();
+			"filterEnvelope" : {
+				"attack" : 0.001,
+				"decay" : 0.02,
+				"sustain" : 1,
+				"baseFrequency" : 6000,
+				"octaves" : -3.3
+			},
+			"filter" : {
+				"type" : "highpass"
+			}
+		}).chain(distortion, drumCompress);
+
+		var hatsLoop = new Tone.Loop({
+			"callback" : function(time){
+				hats.triggerAttackRelease(0, "8n", time);
+			},
+			"interval" : "16n",
+			"probability" : 0.8
+		}).start("1m");
 
 
-	var bassPart2 = new Tone.Part(function(time, event){
-		if (Math.random() < event.prob){
-			bass2.triggerAttackRelease(event.note, event.dur, time);
-		}
-	}, [{time : "0:0", note : "C2", dur : "4n + 8n", prob: 1}, {time : "0:2", note : "C2", dur : "8n", prob : 0.6}, 
-		{time : "0:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "0:2 + 4t*2", note : "C2", dur : "8n", prob : 0.9},
-		{time : "1:0", note : "C2", dur : "4n + 8n", prob : 1}, {time : "1:2", note : "C2", dur : "8n", prob : 0.6}, 
-		{time : "1:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "1:2 + 4t*2", note : "E2", dur : "8n", prob : 0.9},
-		{time : "2:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "2:2", note : "F2", dur : "8n", prob : 0.6}, 
-		{time : "2:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "2:2 + 4t*2", note : "F2", dur : "8n", prob : 0.9},
-		{time : "3:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "3:2", note : "F2", dur : "8n", prob : 0.6}, 
-		{time : "3:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "3:2 + 4t*2", note : "B1", dur : "8n", prob : 0.9}]).start(0);
+		//SNARE PART
+		var snare2 = new Tone.Sampler("./audio/505/snare.mp3", {
+			"volume" : 2,
+			"envelope" : {
+				"attack" : 0.01,
+				"decay" : 0.05,
+				"sustain" : 0
+			},
+			"filterEnvelope" : {
+				"attack" : 0.001,
+				"decay" : 0.01,
+				"sustain" : 0,
+				"baseFrequency" : 3000,
+				"octaves" : 2
+			},
+		}).chain(distortion, drumCompress);
 
-	bassPart2.loop = true;
-	bassPart2.loopEnd = "4m";
+		var snarePart2 = new Tone.Sequence(function(time, velocity){
+			snare2.triggerAttackRelease(0, "8n", time, velocity);
+		}, [null, 1, null, [1, 0.3]]).start(0);
 
-	Tone.Transport.bpm.value = 125;
+		var kick2 = new Tone.DrumSynth({
+			"volume" : 2,
+			"pitchDecay" : 0.01,
+			"octaves" : 6,
+			"oscillator" : {
+				"type" : "square4"
+			},
+			"envelope" : {
+				"attack" : 0.001,
+				"decay" : 0.2,
+				"sustain" : 0
+			}
+		}).connect(drumCompress);
+
+		var kickPart2 = new Tone.Sequence(function(time, probability){
+			if (Math.random() < probability){
+				kick2.triggerAttack("C1", time);
+			}
+		}, [1, [1, [null, 0.3]], 1, [1, [null, 0.5]], 1, 1, 1, [1, [null, 0.8]]], "2n").start(0);
+		
+		// BASS
+		var bass2 = new Tone.SimpleFM({
+			"volume" : 5,
+			"harmonicity" : 1,
+			"modulationIndex" : 3.5,
+			"carrier" : {
+				"oscillator" : {
+					"type" : "custom",
+					"partials" : [0, 1, 0, 2]
+				},
+				"envelope" : {
+					"attack" : 0.08,
+					"decay" : 0.3,
+					"sustain" : 0,
+				},
+			},
+			"modulator" : {
+				"oscillator" : {
+					"type" : "square"
+				},
+				"envelope" : {
+					"attack" : 0.1,
+					"decay" : 0.2,
+					"sustain" : 0.3,
+					"release" : 0.01
+				},
+			}
+		}).toMaster();
+
+
+		var bassPart2 = new Tone.Part(function(time, event){
+			if (Math.random() < event.prob){
+				bass2.triggerAttackRelease(event.note, event.dur, time);
+			}
+		}, [{time : "0:0", note : "C2", dur : "4n + 8n", prob: 1}, {time : "0:2", note : "C2", dur : "8n", prob : 0.6}, 
+			{time : "0:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "0:2 + 4t*2", note : "C2", dur : "8n", prob : 0.9},
+			{time : "1:0", note : "C2", dur : "4n + 8n", prob : 1}, {time : "1:2", note : "C2", dur : "8n", prob : 0.6}, 
+			{time : "1:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "1:2 + 4t*2", note : "E2", dur : "8n", prob : 0.9},
+			{time : "2:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "2:2", note : "F2", dur : "8n", prob : 0.6}, 
+			{time : "2:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "2:2 + 4t*2", note : "F2", dur : "8n", prob : 0.9},
+			{time : "3:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "3:2", note : "F2", dur : "8n", prob : 0.6}, 
+			{time : "3:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "3:2 + 4t*2", note : "B1", dur : "8n", prob : 0.9}]).start(0);
+
+		bassPart2.loop = true;
+		bassPart2.loopEnd = "4m";
+
+		Tone.Transport.bpm.value = 125;
+	}
 
 	</script>
 	<script type="text/javascript">
