@@ -381,6 +381,35 @@ main {
     content: "";
     display: table; }
 
+@-webkit-keyframes blink {
+  0% {
+    background-color: white; }
+  50% {
+    background-color: black; }
+  100% {
+    background-color: white; } }
+@-moz-keyframes blink {
+  0% {
+    background-color: white; }
+  50% {
+    background-color: black; }
+  100% {
+    background-color: white; } }
+@keyframes blink {
+  0% {
+    background-color: white; }
+  50% {
+    background-color: black; }
+  100% {
+    background-color: white; } }
+.blink {
+  -webkit-animation: blink 0.3s linear;
+  -moz-animation: blink 0.3s linear;
+  animation: blink 0.3s linear;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite; }
+
 #title {
   color: #414141;
   letter-spacing: 2px;
