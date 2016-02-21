@@ -13,7 +13,7 @@ var Interface = {
  */
 $(function(){
 	var topbar = $("<div>").attr("id", "TopBar");
-	$("body").prepend(topbar);
+	// $("body").prepend(topbar);
 	
 	if (typeof Tone !== "undefined"){
 		var logo = new Logo({
@@ -27,7 +27,7 @@ $(function(){
 		.attr("id", "Examples")
 		// .attr("title", "examples")
 		// .html("<a href='./index.html'>examples</a>")
-		.appendTo(topbar);
+		// .appendTo(topbar);
 	//mobile start
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 		Interface.isMobile = true;

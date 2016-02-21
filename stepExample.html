@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="./scripts/nexusUI.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="./style/examples.css">
+	<link rel='stylesheet' href='browser/style.css' />
 
 	<script type="text/javascript">
 		// jshint ignore: start
@@ -27,14 +28,21 @@
 			margin-top: 3px;
 		}
 	</style>
-	<div id="Content">
-		<div id="Title">Game OF Life Musicified</div>
-		
 
-		<canvas nx="matrix"></canvas>
+ <h1 id='title'>Musical Game of Life</h1>
+
+  <main>
+    <section class='wrapper'>
+
+		<div id="Content">
+			<canvas nx="matrix"></canvas>
+		</div>	
 
 
-	</div>	
+     </section>
+  </main>
+
+
 	<script type="text/javascript">
 		//setup a polyphonic sampler
 		var keys = new Tone.PolySynth(4, Tone.Sampler, {
