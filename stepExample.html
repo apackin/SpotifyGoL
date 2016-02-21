@@ -100,7 +100,7 @@
 				}
 			}
 			if(col===15) {
-				
+
 				matrix1.life();
 				console.log(Tone.Transport.bpm.value);
 
@@ -108,13 +108,14 @@
 					bassDropFunc(); 
 				} else {
 					bassFunc();
+
 				// TODO should we do bassFunc if we're dopping the base?
 				}
 
 
 				if (Tone.Transport.bpm.value<140){
 				Tone.Transport.bpm.value += (5*(numActiveCells/64))
-					if (Tone.Transport.bpm.value>105){
+					if (Tone.Transport.bpm.value>101){
 						// TODO make a lot of cells alive at random
 					}
 				} 
@@ -257,13 +258,17 @@
 		}).chain(distortion, drumCompress);
 
 		var hatsLoop = new Tone.Loop({
-			"callback" : function(time){
+			function(time){
 				hats.triggerAttackRelease(0, "8n", time);
 			},
 			"interval" : "16n",
 			"probability" : 0.8
-		}).start("1m");
+		}).start();
 
+
+		// Loop(function(time){
+		// 	kick.triggerAttackRelease("C2", "8n", time);
+		// }, "2n").start("2m");
 
 		//SNARE PART
 		var snare2 = new Tone.Sampler("./audio/505/snare.mp3", {
@@ -304,7 +309,7 @@
 			if (Math.random() < probability){
 				kick2.triggerAttack("C1", time);
 			}
-		}, [1, [1, [null, 0.3]], 1, [1, [null, 0.5]], 1, 1, 1, [1, [null, 0.8]]], "2n").start(0);
+		}, [1, [1, [null, 0.3]], 1, [1, [null, 0.5]], 1, 1, 1, [1, [null, 0.8]]], "2n").start();
 		
 		// BASS
 		// var bass2 = new Tone.SimpleFM({
