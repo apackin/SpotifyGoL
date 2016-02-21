@@ -1,0 +1,11 @@
++keyframes(blink)
+  0%
+    background-color: white
+  50%
+    background-color: black
+  100%
+    background-color: white
+
+.blink
+  +animation(blink .3s linear)
+  +animation-iteration-count(infinite)

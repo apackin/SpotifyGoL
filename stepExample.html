@@ -22,7 +22,7 @@
 	</script>
 
 </head>
-<body>	
+<body class='blink'>
 	<style type="text/css">
 		canvas {
 			margin-top: 3px;
@@ -36,7 +36,7 @@
 
 		<div id="Content">
 			<canvas nx="matrix"></canvas>
-		</div>	
+		</div>
 
 
      </section>
@@ -44,7 +44,27 @@
 
 
 	<script type="text/javascript">
-	var numActiveCells = 0;
+
+  const body = $('body');
+
+  function startBlink() {
+    body.addClass('blink');
+  }
+
+  function stopBlink() {
+    body.removeClass('blink');
+  }
+
+  function blinkForTime(time) {
+    startBlink();
+    setTimeout(stopBlink, time);
+  }
+
+  startBlink();
+
+
+
+  var numActiveCells = 0;
 		//setup a polyphonic sampler
 		var keys = new Tone.PolySynth(4, Tone.Sampler, {
 			"A" : "./audio/casio/A1.mp3",
@@ -133,6 +153,7 @@
 			bassPart.at(2, ["C2", "C1", "C1", "C1"]);
 			bassPart.at(3, ["B1", "A1", "B1", "B1"]);
 		}
+		startBlink();
 
 		/*
 		 KICK
@@ -149,7 +170,7 @@
 		var kickPart = new Tone.Loop(function(time){
 			kick.triggerAttackRelease("C2", "8n", time);
 		}, "2n").start("2m");
-		
+
 
 		// // /*
 		// //  SNARE
@@ -173,7 +194,7 @@
 		}, "2n").start("4n");
 
 
-		//set the transport 
+		//set the transport
 		Tone.Transport.bpm.value = 90;
 	
 
@@ -311,12 +332,11 @@
 
 	Tone.Transport.bpm.value = 125;
 
-
 	</script>
 	<script type="text/javascript">
 		nx.onload = function(){
 			nx.colorize("#f5871f");
-			
+
 			matrix1.col = 16;
 			matrix1.row = 8;
 			matrix1.init();
@@ -350,7 +370,7 @@
 			Interface.Loader();
 			$(window).on("resize", function(){
 				matrix1.resize($("#Content").width(), 250);
-				matrix1.draw();	
+				matrix1.draw();
 			});
 		});
 	</script>
