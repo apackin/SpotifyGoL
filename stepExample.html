@@ -63,6 +63,7 @@
 
 
   var numActiveCells = 0;
+  var bassAlreadyDropped = false;
 		//setup a polyphonic sampler
 		var keys = new Tone.PolySynth(4, Tone.Sampler, {
 			// "A" : "./audio/casio/A1.mp3",
@@ -91,7 +92,7 @@
 
 
 		var loop = new Tone.Sequence(function(time, col){
-			console.log(col);
+			
 			var column = matrix1.matrix[col];
 			for (var i = 0; i < 8; i++){
 				if (column[i] === 1){
@@ -102,24 +103,27 @@
 			if(col===15) {
 
 				matrix1.life();
+				console.log(col);
 				console.log(Tone.Transport.bpm.value);
 
 				if (numActiveCells > 25) {
-					bassDropFunc(); 
+					if (!bassAlreadyDropped) {
+						bassDropFunc(); 
+						bassAlreadyDropped = true;
+						startBlink()
+					}
 				} else {
 					bassFunc();
-
-				// TODO should we do bassFunc if we're dopping the base?
+					stopBlink();
 				}
 
 
-				if (Tone.Transport.bpm.value<140){
-				Tone.Transport.bpm.value += (5*(numActiveCells/64))
-					if (Tone.Transport.bpm.value>101){
+				if (Tone.Transport.bpm.value<130){
+					Tone.Transport.bpm.value += (5*(numActiveCells/64))
+					if (Tone.Transport.bpm.value>102){
 						// TODO make a lot of cells alive at random
 					}
 				} 
-
 
 				numActiveCells= 0;
 			}	
@@ -167,11 +171,10 @@
 		}
 
 		bassDropFunc = function() {
-			bassPart.at(0, ["C2", "C3", "C2", "C2"]);
-			bassPart.at(1, ["D2", "E2", "D2", "D2"]);
-			bassPart.at(2, ["C2", "C1", "C1", "C1"]);
-			bassPart.at(3, ["B1", "A1", "B1", "B1"]);
-			blinkForTime(2500);
+			bassPart.at(0, ["C2", "C3", "C2"]);
+			bassPart.at(1, ["D2", "E2", "D2", "C2"]);
+			bassPart.at(2, ["C2", "C1"]);
+			bassPart.at(3, ["D2", "E2", "D2", "C2"]);
 			Tone.Transport.bpm.value = 120;
 			funcHat();
 		}
@@ -312,50 +315,50 @@
 		}, [1, [1, [null, 0.3]], 1, [1, [null, 0.5]], 1, 1, 1, [1, [null, 0.8]]], "2n").start();
 		
 		// BASS
-		// var bass2 = new Tone.SimpleFM({
-		// 	"volume" : 5,
-		// 	"harmonicity" : 1,
-		// 	"modulationIndex" : 3.5,
-		// 	"carrier" : {
-		// 		"oscillator" : {
-		// 			"type" : "custom",
-		// 			"partials" : [0, 1, 0, 2]
-		// 		},
-		// 		"envelope" : {
-		// 			"attack" : 0.08,
-		// 			"decay" : 0.3,
-		// 			"sustain" : 0,
-		// 		},
-		// 	},
-		// 	"modulator" : {
-		// 		"oscillator" : {
-		// 			"type" : "square"
-		// 		},
-		// 		"envelope" : {
-		// 			"attack" : 0.1,
-		// 			"decay" : 0.2,
-		// 			"sustain" : 0.3,
-		// 			"release" : 0.01
-		// 		},
-		// 	}
-		// }).toMaster();
+		var bass2 = new Tone.SimpleFM({
+			"volume" : 5,
+			"harmonicity" : 1,
+			"modulationIndex" : 3.5,
+			"carrier" : {
+				"oscillator" : {
+					"type" : "custom",
+					"partials" : [0, 1, 0, 2]
+				},
+				"envelope" : {
+					"attack" : 0.08,
+					"decay" : 0.3,
+					"sustain" : 0,
+				},
+			},
+			"modulator" : {
+				"oscillator" : {
+					"type" : "square"
+				},
+				"envelope" : {
+					"attack" : 0.1,
+					"decay" : 0.2,
+					"sustain" : 0.3,
+					"release" : 0.01
+				},
+			}
+		}).toMaster();
 
 
-		// var bassPart2 = new Tone.Part(function(time, event){
-		// 	if (Math.random() < event.prob){
-		// 		bass2.triggerAttackRelease(event.note, event.dur, time);
-		// 	}
-		// }, [{time : "0:0", note : "C2", dur : "4n + 8n", prob: 1}, {time : "0:2", note : "C2", dur : "8n", prob : 0.6}, 
-		// 	{time : "0:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "0:2 + 4t*2", note : "C2", dur : "8n", prob : 0.9},
-		// 	{time : "1:0", note : "C2", dur : "4n + 8n", prob : 1}, {time : "1:2", note : "C2", dur : "8n", prob : 0.6}, 
-		// 	{time : "1:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "1:2 + 4t*2", note : "E2", dur : "8n", prob : 0.9},
-		// 	{time : "2:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "2:2", note : "F2", dur : "8n", prob : 0.6}, 
-		// 	{time : "2:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "2:2 + 4t*2", note : "F2", dur : "8n", prob : 0.9},
-		// 	{time : "3:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "3:2", note : "F2", dur : "8n", prob : 0.6}, 
-		// 	{time : "3:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "3:2 + 4t*2", note : "B1", dur : "8n", prob : 0.9}]).start(0);
+		var bassPart2 = new Tone.Part(function(time, event){
+			if (Math.random() < event.prob){
+				bass2.triggerAttackRelease(event.note, event.dur, time);
+			}
+		}, [{time : "0:0", note : "C2", dur : "4n + 8n", prob: 1}, {time : "0:2", note : "C2", dur : "8n", prob : 0.6}, 
+			{time : "0:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "0:2 + 4t*2", note : "C2", dur : "8n", prob : 0.9},
+			{time : "1:0", note : "C2", dur : "4n + 8n", prob : 1}, {time : "1:2", note : "C2", dur : "8n", prob : 0.6}, 
+			{time : "1:2 + 4t", note : "C2", dur : "8n", prob : 0.4}, {time : "1:2 + 4t*2", note : "E2", dur : "8n", prob : 0.9},
+			{time : "2:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "2:2", note : "F2", dur : "8n", prob : 0.6}, 
+			{time : "2:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "2:2 + 4t*2", note : "F2", dur : "8n", prob : 0.9},
+			{time : "3:0", note : "F2", dur : "4n + 8n", prob : 1}, {time : "3:2", note : "F2", dur : "8n", prob : 0.6}, 
+			{time : "3:2 + 4t", note : "F2", dur : "8n", prob : 0.4}, {time : "3:2 + 4t*2", note : "B1", dur : "8n", prob : 0.9}]).start(0);
 
-		// bassPart2.loop = true;
-		// bassPart2.loopEnd = "4m";
+		bassPart2.loop = true;
+		bassPart2.loopEnd = "4m";
 	}
 
 	</script>
