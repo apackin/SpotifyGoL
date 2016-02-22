@@ -118,11 +118,14 @@
 						// should the background bass change on drop?
 						funcHat();
 						bassAlreadyDropped = true;
-						startBlink()
 					}
+					startBlink()
 				} else {
 					bassFunc();
 					stopBlink();
+					if (numActiveCells < bassDropThreshold-5){
+						makeCellsLive(.1);
+					}
 				}
 
 
@@ -134,17 +137,21 @@
 					// if a long time has passed and
 					// the matrix is not changing
 					// liven up a few cells at random
-					for (var i = 0; i < 8; i++) {
-						for (var j = 0; j < 16; j++) {
-							if(Math.random()<0.10)
-							matrix1.setCell(j,i,true)
-						}
-					}
+					makeCellsLive(.05);
 						// Turns cell on at column 1 row 3
 						// matrix1.setCell(1,3,true);
 						// TODO make a lot of cells alive at random
 					}
 				numActiveCells= 0;
+		}
+
+		function makeCellsLive(chance){
+			for (var i = 0; i < 8; i++) {
+				for (var j = 0; j < 16; j++) {
+					if(Math.random()<chance)
+					matrix1.setCell(j,i,true)
+				}
+			}
 		}
 		/*
 		 BASS
