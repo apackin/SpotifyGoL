@@ -102,14 +102,18 @@
 				}
 			}
 			if(col===15) {
-
-				matrix1.life();
 				console.log(col);
 				console.log(Tone.Transport.bpm.value);
+				endOfRow(25);
+			}	
 
-				if (numActiveCells > 25) {
+		}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
+
+
+		function endOfRow (bassDropThreshold){
+				matrix1.life();
+				if (numActiveCells > bassDropThreshold) {
 					if (!bassAlreadyDropped) {
-						Tone.Transport.bpm.value = 120;
 						// bassDropFunc(); 
 						// should the background bass change on drop?
 						funcHat();
@@ -124,18 +128,24 @@
 
 				if (Tone.Transport.bpm.value<130){
 					Tone.Transport.bpm.value += (5*(numActiveCells/64))
-					if (Tone.Transport.bpm.value>102){
+				} 
+
+				if (Tone.Transport.bpm.value>102 && !bassAlreadyDropped){
+					// if a long time has passed and
+					// the matrix is not changing
+					// liven up a few cells at random
+					for (var i = 0; i < 8; i++) {
+						for (var j = 0; j < 16; j++) {
+							if(Math.random()<0.10)
+							matrix1.setCell(j,i,true)
+						}
+					}
 						// Turns cell on at column 1 row 3
 						// matrix1.setCell(1,3,true);
 						// TODO make a lot of cells alive at random
 					}
-				} 
-
 				numActiveCells= 0;
-			}	
-
-		}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
-
+		}
 		/*
 		 BASS
 		//  */
@@ -232,6 +242,7 @@
 	//and a compressor
 	
 	var funcHat = function() {
+		Tone.Transport.bpm.value = 120;
 		var drumCompress = new Tone.Compressor({
 			"threshold" : -30,
 			"ratio" : 6,
