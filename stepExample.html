@@ -92,21 +92,15 @@
 
 
 		var loop = new Tone.Sequence(function(time, col){
-			//TODO add active state to columns during loop.
 			var column = matrix1.matrix[col];
-			// console.dir(column);
-			// console.dir(this);
-			// nx.colorize("border", "#000000");
+			matrix1.stop();
 			matrix1.sequence(Tone.Transport.bpm.value*4);
 			for (var i = 0; i < 8; i++){
 				if (column[i] === 1){
 					keys.triggerAttackRelease(noteNames[i], "32n", time);
 					numActiveCells++;
 				}
-				// nx.colorize("#000000");
 			}
-			// nx.colorize("border", "#e5e5e5");
-
 			if(col===15) {
 
 				matrix1.life();
@@ -117,6 +111,7 @@
 					if (!bassAlreadyDropped) {
 						Tone.Transport.bpm.value = 120;
 						// bassDropFunc(); 
+						// should the background bass change on drop?
 						funcHat();
 						bassAlreadyDropped = true;
 						startBlink()
@@ -130,6 +125,8 @@
 				if (Tone.Transport.bpm.value<130){
 					Tone.Transport.bpm.value += (5*(numActiveCells/64))
 					if (Tone.Transport.bpm.value>102){
+						// Turns cell on at column 1 row 3
+						// matrix1.setCell(1,3,true);
 						// TODO make a lot of cells alive at random
 					}
 				} 
@@ -402,6 +399,7 @@
 					loop.start();
 				},
 				end : function(){
+					matrix1.stop();
 					Tone.Transport.stop();
 				},
 			});
