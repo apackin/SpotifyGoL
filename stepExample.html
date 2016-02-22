@@ -35,7 +35,7 @@
     <section class='wrapper'>
 
 		<div id="Content">
-			<canvas nx="matrix"></canvas>
+			<canvas nx="matrix" label="Treble"></canvas>
 		</div>
 
 
@@ -92,14 +92,21 @@
 
 
 		var loop = new Tone.Sequence(function(time, col){
-			
+			//TODO add active state to columns during loop.
 			var column = matrix1.matrix[col];
+			// console.dir(column);
+			// console.dir(this);
+			// nx.colorize("border", "#000000");
+			matrix1.sequence(Tone.Transport.bpm.value*4);
 			for (var i = 0; i < 8; i++){
 				if (column[i] === 1){
 					keys.triggerAttackRelease(noteNames[i], "32n", time);
 					numActiveCells++;
 				}
+				// nx.colorize("#000000");
 			}
+			// nx.colorize("border", "#e5e5e5");
+
 			if(col===15) {
 
 				matrix1.life();
@@ -108,7 +115,9 @@
 
 				if (numActiveCells > 25) {
 					if (!bassAlreadyDropped) {
-						bassDropFunc(); 
+						Tone.Transport.bpm.value = 120;
+						// bassDropFunc(); 
+						funcHat();
 						bassAlreadyDropped = true;
 						startBlink()
 					}
@@ -134,7 +143,7 @@
 		 BASS
 		//  */
 		var bass = new Tone.MonoSynth({
-			"volume" : -6,
+			"volume" : -4,
 			"envelope" : {
 				"attack" : 0.1,
 				"decay" : 0.3,
@@ -175,7 +184,6 @@
 			bassPart.at(1, ["D2", "E2", "D2", "C2"]);
 			bassPart.at(2, ["C2", "C1"]);
 			bassPart.at(3, ["D2", "E2", "D2", "C2"]);
-			Tone.Transport.bpm.value = 120;
 			funcHat();
 		}
 
@@ -316,7 +324,7 @@
 		
 		// BASS
 		var bass2 = new Tone.SimpleFM({
-			"volume" : 5,
+			"volume" : 15,
 			"harmonicity" : 1,
 			"modulationIndex" : 3.5,
 			"carrier" : {
@@ -371,6 +379,7 @@
 			matrix1.init();
 			matrix1.resize($("#Content").width(), 250);
 			matrix1.draw();
+			nx.startPulse();
 
 		}
 		$(function(){
