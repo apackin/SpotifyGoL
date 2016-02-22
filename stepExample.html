@@ -64,6 +64,7 @@
 
   var numActiveCells = 0;
   var bassAlreadyDropped = false;
+  var numSeqPasses = 0;
 		//setup a polyphonic sampler
 		var keys = new Tone.PolySynth(4, Tone.Sampler, {
 			// "A" : "./audio/casio/A1.mp3",
@@ -102,9 +103,11 @@
 				}
 			}
 			if(col===15) {
+				numSeqPasses++;
 				console.log(col);
 				console.log(Tone.Transport.bpm.value);
-				endOfRow(25);
+				endOfRow(30);
+				numActiveCells= 0;
 			}	
 
 		}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
@@ -120,7 +123,7 @@
 						bassAlreadyDropped = true;
 					}
 					startBlink()
-				} else {
+				} else if (bassAlreadyDropped){
 					bassFunc();
 					stopBlink();
 					if (numActiveCells < bassDropThreshold-5){
@@ -133,16 +136,11 @@
 					Tone.Transport.bpm.value += (5*(numActiveCells/64))
 				} 
 
-				if (Tone.Transport.bpm.value>102 && !bassAlreadyDropped){
-					// if a long time has passed and
-					// the matrix is not changing
-					// liven up a few cells at random
-					makeCellsLive(.05);
-						// Turns cell on at column 1 row 3
-						// matrix1.setCell(1,3,true);
-						// TODO make a lot of cells alive at random
+				if (!bassAlreadyDropped){
+					if (Tone.Transport.bpm.value<100 && numSeqPasses>10 || numSeqPasses>20 &&){
+						makeCellsLive(.05);
 					}
-				numActiveCells= 0;
+				}
 		}
 
 		function makeCellsLive(chance){
@@ -407,6 +405,7 @@
 			// 		Tone.Transport.bpm.value = val;
 			// 	}
 			// });
+
 			new Interface.Button({
 				text : "Start",
 				activeText : "Stop",
