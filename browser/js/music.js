@@ -68,7 +68,10 @@
 
 
     function endOfRow (bassDropThreshold){
-        matrix1.life();
+        function fnCheckLife (){return $('#lifeCheck').is(':checked');}
+
+        if (fnCheckLife()) matrix1.life();
+
         if (numActiveCells > bassDropThreshold) {
           if (!bassAlreadyDropped) {
             // bassDropFunc(); 
@@ -81,14 +84,14 @@
         } else if (bassAlreadyDropped){
           bassFunc();
           stopBlink();
-          if (numActiveCells < bassDropThreshold-5){
-            makeCellsLive(.1);
+          if (numActiveCells < bassDropThreshold-5 && fnCheckLife()){
+            // makeCellsLive(.1);
           }
         }
 
         if (!bassAlreadyDropped){
-          if (Tone.Transport.bpm.value<100 && numSeqPasses>10 || numSeqPasses>20){
-            makeCellsLive(.05);
+          if (fnCheckLife() && Tone.Transport.bpm.value<100 && numSeqPasses>10 || numSeqPasses>20){
+            // makeCellsLive(.05);
           }
           Tone.Transport.bpm.value += (5*(numActiveCells/64))
         }

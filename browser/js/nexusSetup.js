@@ -10,15 +10,15 @@
 
     }
     $(function(){
-      // new Interface.Slider({
-      //  name : "BPM",
-      //  min : 80,
-      //  max : 200,
-      //  value : Tone.Transport.bpm.value,
-      //  drag : function(val){
-      //    Tone.Transport.bpm.value = val;
-      //  }
-      // });
+      new Interface.Slider({
+       name : "BPM",
+       min : 80,
+       max : 200,
+       value : Tone.Transport.bpm.value,
+       drag : function(val){
+         Tone.Transport.bpm.value = val;
+       }
+      });
 
       new Interface.Button({
         text : "Start",

@@ -63,6 +63,7 @@ video {
 
  canvas {
       margin-top: 3px;
+      width: 80%;
     }
     
 /**
@@ -443,4 +444,7 @@ main {
   #upload input[type='file'] {
     width: 300px; }
 
+form {
+  text-align: center;
+}
 /*# sourceMappingURL=style.css.map */
