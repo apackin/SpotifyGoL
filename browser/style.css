@@ -61,6 +61,10 @@ video {
   vertical-align: baseline;
   /* 2 */ }
 
+ canvas {
+      margin-top: 3px;
+    }
+    
 /**
  * Prevent modern browsers from displaying `audio` without controls.
  * Remove excess height in iOS 5 devices.
