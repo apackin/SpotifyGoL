@@ -47,7 +47,7 @@ var keyboardNotes = {
     }
 
     noteNames.forEach(function(note, idx, notesArray){
-      noteSelecters += '<select class="NoteSelecter" name="note' + idx +'Ctrl">' + noteOptions + '</select>';
+      noteSelecters += '<select class="NoteSelecter" name="note' + idx +'Ctrl"><option selected disabled>'+ note +'</option>' + noteOptions + '</select>';
       // make selecter element with options map.noteNames
     });
 
@@ -60,9 +60,6 @@ var keyboardNotes = {
 
 
   var loop = new Tone.Sequence(function(time, col){
-    // $('#title').append(createNoteController());
-    // $(createNoteController()).appendTo('body');
-
     var column = matrix1.matrix[col];
     matrix1.stop();
     matrix1.sequence(Tone.Transport.bpm.value*4);
