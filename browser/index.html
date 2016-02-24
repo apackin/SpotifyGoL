@@ -24,10 +24,20 @@
 
   <main>
     <form>
-      <input type="checkbox" id="lifeCheck" name="life" value="lifify"> Give Life </input>
+      <input type="checkbox" id="lifeCheck" name="life" value="lifify" checked> Give Life </input> 
+      <input type="checkbox" id="bpmIncrease" name="bpmIncrease" value="bpmIncrease" checked> Increase BPM </input>
     </form>
-    <section class='wrapper'>
 
+      <div>
+        <select class='NoteSelecter' name="NoteSelecter">
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="fiat">Fiat</option>
+          <option value="audi">Audi</option>
+        </select>
+      </div>
+      
+    <section class='wrapper'>
     <div id="Content">
       <canvas nx="matrix" label="Treble"></canvas>
     </div>

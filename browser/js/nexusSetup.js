@@ -2,18 +2,18 @@
       nx.colorize("#f5871f");
 
       matrix1.col = 16;
-      matrix1.row = 8;
+      matrix1.row = noteNames.length;
       matrix1.init();
       matrix1.resize($("#Content").width(), 250);
       matrix1.draw();
       nx.startPulse();
 
-    }
+    };
     $(function(){
       new Interface.Slider({
        name : "BPM",
        min : 80,
-       max : 200,
+       max : 150,
        value : Tone.Transport.bpm.value,
        drag : function(val){
          Tone.Transport.bpm.value = val;

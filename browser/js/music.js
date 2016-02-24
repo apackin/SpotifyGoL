@@ -14,43 +14,40 @@
     setTimeout(stopBlink, time);
   }
 
-
+var keyboardNotes = {
+  "A" : "/audio/casio/A1.mp3",
+  "A#" : "/audio/casio/As1.mp3",
+  "A2" : "/audio/casio/A2.mp3",
+  "C" : "/audio/casio/C2.mp3",
+  "C#" : "/audio/casio/Cs2.mp3",
+  "D" : "/audio/casio/D2.mp3",
+  "D#" : "/audio/casio/Ds2.mp3",
+  "E" : "/audio/casio/E2.mp3",
+  "F" : "/audio/casio/F2.mp3",
+  "F#" : "/audio/casio/Fs2.mp3",
+  "G" : "/audio/casio/G2.mp3",
+  "G#" : "/audio/casio/Gs1.mp3",
+};
 
   var numActiveCells = 0;
   var bassAlreadyDropped = false;
   var numSeqPasses = 0;
     //setup a polyphonic sampler
-    var keys = new Tone.PolySynth(4, Tone.Sampler, {
-      "A" : "/audio/casio/A1.mp3",
-      // "A#" : "/audio/casio/As1.mp3",
-      // "A2" : "/audio/casio/A2.mp3",
-      "C" : "/audio/casio/C2.mp3",
-      // "C#" : "/audio/casio/Cs2.mp3",
-      "D" : "/audio/casio/D2.mp3",
-      // "D#" : "/audio/casio/Ds2.mp3",
-      "E" : "/audio/casio/E2.mp3",
-      // "F" : "/audio/casio/F2.mp3",
-      // "F#" : "/audio/casio/Fs2.mp3",
-      "G" : "/audio/casio/G2.mp3",
-      // "G#" : "/audio/casio/Gs1.mp3",
-      // "A#" : "/audio/casio/As1.mp3",
-      "C" : "/audio/casio/C2.mp3",
-      "D#" : "/audio/casio/Ds2.mp3",
-      "G" : "/audio/casio/G2.mp3",
-    }, {
+    var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
       "volume" : 4,
     }).toMaster();
-    // var keys = new Tone.PolySynth(4, Tone.SimpleSynth).toMaster();
-    //the notes
     var noteNames = ["A", "C", "D", "E", "G", "C", "D#", "G"];
-    // var noteNames = ["F#3", "E3", "C#3", "A3"];
+
+    // other /nonworking/ option
+    // var keys = new Tone.PolySynth(4, Tone.SimpleSynth).toMaster();
+    // var noteNames = ["F#3", "E3", "C#3", "A3", "F#3", "E3", "C#3", "A3"];
 
 
     var loop = new Tone.Sequence(function(time, col){
       var column = matrix1.matrix[col];
       matrix1.stop();
       matrix1.sequence(Tone.Transport.bpm.value*4);
-      for (var i = 0; i < 8; i++){
+      for (var i = 0; i < noteNames.length; i++){
         if (column[i] === 1){
           keys.triggerAttackRelease(noteNames[i], "32n", time);
           numActiveCells++;
@@ -69,6 +66,7 @@
 
     function endOfRow (bassDropThreshold){
         function fnCheckLife (){return $('#lifeCheck').is(':checked');}
+        function fnAutoUpbeat (){return $('#bpmIncrease').is(':checked');}
 
         if (fnCheckLife()) matrix1.life();
 
@@ -76,24 +74,24 @@
           if (!bassAlreadyDropped) {
             // bassDropFunc(); 
             // should the background bass change on drop?
-            bassPart.stop()
+            bassPart.stop();
             funcHat();
             bassAlreadyDropped = true;
           }
-          startBlink()
+          startBlink();
         } else if (bassAlreadyDropped){
           bassFunc();
           stopBlink();
           if (numActiveCells < bassDropThreshold-5 && fnCheckLife()){
-            // makeCellsLive(.1);
+            makeCellsLive(0.1);
           }
         }
 
         if (!bassAlreadyDropped){
           if (fnCheckLife() && Tone.Transport.bpm.value<100 && numSeqPasses>10 || numSeqPasses>20){
-            // makeCellsLive(.05);
+            makeCellsLive(0.05);
           }
-          Tone.Transport.bpm.value += (5*(numActiveCells/64))
+          if (fnAutoUpbeat()) Tone.Transport.bpm.value += (5*(numActiveCells/64));
         }
     }
 
@@ -101,7 +99,7 @@
       for (var i = 0; i < 8; i++) {
         for (var j = 0; j < 16; j++) {
           if(Math.random()<chance)
-          matrix1.setCell(j,i,true)
+          matrix1.setCell(j,i,true);
         }
       }
     }
