@@ -20,27 +20,24 @@
 </head>
 <body>
 
- <h1 id='title'>Musical Game of Life</h1>
+ <h1 id='title'>Kanye's Game of Life</h1>
 
   <main>
-    <form>
-      <input type="checkbox" id="lifeCheck" name="life" value="lifify" checked> Give Life </input> 
-      <input type="checkbox" id="bpmIncrease" name="bpmIncrease" value="bpmIncrease" checked> Increase BPM </input>
-    </form>
 
-      <div>
-        <select class='NoteSelecter' name="NoteSelecter">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="fiat">Fiat</option>
-          <option value="audi">Audi</option>
-        </select>
-      </div>
-      
+      <!-- Make a selector for each item in the noteNames, that lets you change that items value -->
+
     <section class='wrapper'>
-    <div id="Content">
-      <canvas nx="matrix" label="Treble"></canvas>
-    </div>
+
+      <div id="noteController">
+        <form>
+          <input type="checkbox" id="lifeCheck" name="life" value="lifify" checked> Give Life </input> <br>
+          <input type="checkbox" id="bpmIncrease" name="bpmIncrease" value="bpmIncrease" checked> Increase BPM </input>
+      </form>
+      </div>
+
+      <div id="Content">
+        <canvas nx="matrix" label="Treble"></canvas>
+      </div>
 
 
      </section>

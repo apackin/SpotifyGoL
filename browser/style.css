@@ -443,17 +443,25 @@ main {
   #upload input[type='file'] {
     width: 300px; }
 
-main>form {
+section{
+  display: inline-block;
+}
+
+#Content {
+  max-width: 75%;
+  margin-left: 20%;
+  display: inline-block;
+}
+
+#noteController {
+  max-width: 20%;
+  display: inline-block;
   text-align: center;
+  margin-left: 1%;
 }
+/*This messes up the matrix clickability*/
 
-input {
-  margin: 1em;
-}
 
-#matrix1 {
-  max-width: 80%;
-}
 
 /*.NoteSelecter {
   display: inline-block;
