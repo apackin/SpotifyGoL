@@ -59,7 +59,7 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
     "volume" : 5,
   }).toMaster();
   var noteNames = ["G3", "E3", "D3", "C3", "A3", "G2", "E2", "C2", "C3"];
-
+  // Should be able to select which instrument and what note. 
   // var notes = ["A","B","C","D","E","F","G"];
 
 
