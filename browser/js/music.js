@@ -55,10 +55,10 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
 }
 
   // other /nonworking/ option
-  var keySynth = new Tone.PolySynth(4, Tone.SimpleSynth, {
+  var keySynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
     "volume" : 6,
   }).toMaster();
-  var noteNames = ["D2", "A3", "C3", "D3", "E3", "G3", "A4"];
+  var noteNames = ["A4", "G3", "E3", "D3", "C3", "A3", "D2"];
 
 
   var loop = new Tone.Sequence(function(time, col){
@@ -86,6 +86,7 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
   function endOfRow (bassDropThreshold){
       function fnCheckLife (){return $('#lifeCheck').is(':checked');}
       function fnAutoUpbeat (){return $('#bpmIncrease').is(':checked');}
+      function fnbassDrop (){return $('#bassDrop').is(':checked');}
 
       if (fnCheckLife()) matrix1.life();
 
@@ -93,8 +94,7 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
         if (!bassAlreadyDropped) {
           // bassDropFunc(); 
           // should the background bass change on drop?
-          bassPart.stop();
-          funcHat();
+          if (fnbassDrop()) funcHat();
           bassAlreadyDropped = true;
         }
         startBlink();
@@ -111,6 +111,7 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
           makeCellsLive(0.05);
         }
         if (fnAutoUpbeat()) Tone.Transport.bpm.value += (5*(numActiveCells/64));
+        bassFunc();
       }
   }
 
