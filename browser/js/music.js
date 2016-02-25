@@ -15,28 +15,28 @@
   }
 
 var keyboardNotes = {
-  "A" : "/audio/casio/A1.mp3",
+  "A1" : "/audio/casio/A1.mp3",
   "A#" : "/audio/casio/As1.mp3",
   "A2" : "/audio/casio/A2.mp3",
-  "C" : "/audio/casio/C2.mp3",
+  "C1" : "/audio/casio/C2.mp3",
   "C#" : "/audio/casio/Cs2.mp3",
-  "D" : "/audio/casio/D2.mp3",
+  "D1" : "/audio/casio/D2.mp3",
   "D#" : "/audio/casio/Ds2.mp3",
-  "E" : "/audio/casio/E2.mp3",
-  "F" : "/audio/casio/F2.mp3",
+  "E1" : "/audio/casio/E2.mp3",
+  "F1" : "/audio/casio/F2.mp3",
   "F#" : "/audio/casio/Fs2.mp3",
-  "G" : "/audio/casio/G2.mp3",
+  "G1" : "/audio/casio/G2.mp3",
   "G#" : "/audio/casio/Gs1.mp3",
 };
+var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
+  "volume" : 4,
+}).toMaster();
+// What depends on the keys variable?
+// var noteNames = ["G1", "C1", "E1", "G3", "A1", "E1", "D1", "C1"];
 
   var numActiveCells = 0;
   var bassAlreadyDropped = false;
   var numSeqPasses = 0;
-  //setup a polyphonic sampler
-  var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
-    "volume" : 4,
-  }).toMaster();
-  var noteNames = ["A", "C", "D", "E", "G", "C", "D#", "G"];
 
   function createNoteController() {
     var noteSelecters = '';
@@ -55,17 +55,20 @@ var keyboardNotes = {
 }
 
   // other /nonworking/ option
-  // var keys = new Tone.PolySynth(4, Tone.SimpleSynth).toMaster();
-  // var noteNames = ["F#3", "E3", "C#3", "A3", "F#3", "E3", "C#3", "A3"];
+  var keySynth = new Tone.PolySynth(4, Tone.SimpleSynth, {
+    "volume" : 6,
+  }).toMaster();
+  var noteNames = ["D2", "A3", "C3", "D3", "E3", "G3", "A4"];
 
 
   var loop = new Tone.Sequence(function(time, col){
     var column = matrix1.matrix[col];
     matrix1.stop();
     matrix1.sequence(Tone.Transport.bpm.value*4);
+
     for (var i = 0; i < noteNames.length; i++){
       if (column[i] === 1){
-        keys.triggerAttackRelease(noteNames[i], "32n", time);
+        keySynth.triggerAttackRelease(noteNames[i], "32n", time);
         numActiveCells++;
       }
     }
