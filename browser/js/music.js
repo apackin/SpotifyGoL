@@ -56,19 +56,23 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
 
   // other /nonworking/ option
   var keySynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
-    "volume" : 6,
+    "volume" : 5,
   }).toMaster();
-  var noteNames = ["A4", "G3", "E3", "D3", "C3", "A3", "D2"];
+  var noteNames = ["G3", "E3", "D3", "C3", "A3", "G2", "E2", "C2", "C3"];
+
+  // var notes = ["A","B","C","D","E","F","G"];
 
 
   var loop = new Tone.Sequence(function(time, col){
     var column = matrix1.matrix[col];
-    matrix1.stop();
-    matrix1.sequence(Tone.Transport.bpm.value*4);
+    
 
     for (var i = 0; i < noteNames.length; i++){
       if (column[i] === 1){
-        keySynth.triggerAttackRelease(noteNames[i], "32n", time);
+        if(i<5) keySynth.triggerAttackRelease(noteNames[i], "32n", time);
+        else if (i<8) kick.triggerAttackRelease(noteNames[i], "32n", time);
+        else if (i<9) bass.triggerAttackRelease(noteNames[i], "32n", time);
+
         numActiveCells++;
       }
     }
@@ -79,6 +83,8 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
       endOfRow(30);
       numActiveCells= 0;
     } 
+    matrix1.stop();
+    matrix1.sequence(Tone.Transport.bpm.value*4);
 
   }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
@@ -106,13 +112,15 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
         }
       }
 
-      if (!bassAlreadyDropped){
-        if (fnCheckLife() && Tone.Transport.bpm.value<100 && numSeqPasses>10 || numSeqPasses>20){
+      if (!bassAlreadyDropped && fnCheckLife()){
+        if (Tone.Transport.bpm.value<100 && numSeqPasses>10 || numSeqPasses>20){
           makeCellsLive(0.05);
         }
-        if (fnAutoUpbeat()) Tone.Transport.bpm.value += (5*(numActiveCells/64));
         bassFunc();
       }
+
+      if (fnAutoUpbeat()) Tone.Transport.bpm.value += (5*(numActiveCells/64));
+
   }
 
   function makeCellsLive(chance){
@@ -127,7 +135,7 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
    BASS
   //  */
   var bass = new Tone.MonoSynth({
-    "volume" : -4,
+    "volume" : -3,
     "envelope" : {
       "attack" : 0.1,
       "decay" : 0.3,
