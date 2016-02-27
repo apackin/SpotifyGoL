@@ -2,9 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>SCORE</title>
+  <title>My Beat</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <link href="/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+  <link href="/bootstrap-dark.css" rel="stylesheet" />
+  <link href="/style.css" rel="stylesheet" />
+  <link href="/style/examples.css" rel="stylesheet" type="text/css">
+
+  <script src="/angular/angular.js" defer></script>
+  <script src="/angular-ui-router/release/angular-ui-router.js" defer></script>
+  <script src="/angular-messages/angular-messages.js" defer></script>
 
   <script type="text/javascript" src="/scripts/Tone.js"></script>
   <script type="text/javascript" src="/scripts/jquery.min.js"></script>
@@ -12,12 +21,10 @@
   <script type="text/javascript" src="/scripts/Logo.js"></script>
   <script type="text/javascript" src="/scripts/Interface.js"></script>
   <script type="text/javascript" src="/scripts/nexusUI.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="/style/examples.css">
-  <link rel='stylesheet' href='style.css' />
+  <script src="/js/module.js" defer></script>
 
 </head>
-<body>
+<body ng-app="myBeat">
 
  <h1 id='title'>Kanye's Game of Life</h1>
 
