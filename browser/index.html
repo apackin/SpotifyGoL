@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <title>My Beat</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-  <link href="/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-  <link href="/bootstrap-dark.css" rel="stylesheet" />
-  <link href="/style.css" rel="stylesheet" />
-  <link href="/style/examples.css" rel="stylesheet" type="text/css">
-
-  <script src="/angular/angular.js" defer></script>
-  <script src="/angular-ui-router/release/angular-ui-router.js" defer></script>
-  <script src="/angular-messages/angular-messages.js" defer></script>
-
-  <script type="text/javascript" src="/scripts/Tone.js"></script>
-  <script type="text/javascript" src="/scripts/jquery.min.js"></script>
-  <script type="text/javascript" src="/scripts/draggabilly.js"></script>
-  <script type="text/javascript" src="/scripts/Logo.js"></script>
-  <script type="text/javascript" src="/scripts/Interface.js"></script>
-  <script type="text/javascript" src="/scripts/nexusUI.js"></script>
-  <script src="/js/module.js" defer></script>
-
+    <meta charset="utf-8">
+    <title>My Beat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="/style.css" rel="stylesheet" />
+    <link href="/style/examples.css" rel="stylesheet" type="text/css">
+    <script src="/angular/angular.js" defer></script>
+    <script src="/angular-ui-router/release/angular-ui-router.js" defer></script>
+    <script src="/angular-messages/angular-messages.js" defer></script>
+    <script type="text/javascript" src="/scripts/Tone.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/scripts/draggabilly.js"></script>
+    <script type="text/javascript" src="/scripts/Logo.js"></script>
+    <script type="text/javascript" src="/scripts/Interface.js"></script>
+    <script type="text/javascript" src="/scripts/nexusUI.js"></script>
+    <script src="/js/module.js" defer></script>
 </head>
 <!-- <body ng-app="myBeat"> -->
-
- <h1 id='title'>My Beat</h1>
-
-  <main>
+<h1 id='title'>My Beat</h1>
+<main>
     <section class='wrapper'>
-
-      <div id="noteController">
-
-        <form>
-          <br>
-          <input type="checkbox" id="lifeCheck" name="life" value="lifify"> Give Life </input> <br><br>
-          <input type="checkbox" id="bpmIncrease" name="bpmIncrease" value="bpmIncrease" checked> Increase BPM </input><br><br>
-          <input type="checkbox" id="bassDrop" name="bassDrop" value="bassDrop" > Bass Drops </input>
-      </form>
-
-      </div>
-
-      <div id="Content">
-        <canvas nx="matrix"></canvas>
-      </div>
-
-
-     </section>
-  </main>
-
-  <script type="text/javascript" src="/js/music.js"></script>
-  <script type="text/javascript" src="/js/nexusSetup.js"</script>
-   
-  </script>
+        <div id="noteController">
+            <form>
+                <br>
+                <input type="checkbox" id="lifeCheck" name="life" value="lifify"> Give Life </input>
+                <br>
+                <br>
+                <input type="checkbox" id="bpmIncrease" name="bpmIncrease" value="bpmIncrease" checked> Increase BPM </input>
+                <br>
+                <br>
+                <input type="checkbox" id="bassDrop" name="bassDrop" value="bassDrop"> Bass Drops </input>
+            </form>
+        </div>
+        <div id="Content">
+            <div id="firstMatrix">
+                <canvas nx="matrix">
+                </canvas>
+                <button type="button" class="btn btn-success" onclick="addRow('matrix1')">Add Note</button>
+                <button type="button" class="btn btn-success" onclick="removeRow('matrix1')">Remove Note</button>
+            </div>
+            <button type="button" class="btn btn-success" onclick="createMatrix('drumMatrix')">Remove Note</button>
+            <div id="secondMatrix">
+                <canvas nx="matrix" id="drumMatrix">
+                </canvas>
+                <button type="button" class="btn btn-success" onclick="addRow('drumMatrix')">Add Note</button>
+                <button type="button" class="btn btn-success" onclick="removeRow('drumMatrix')">Remove Note</button>
+            </div>
+        </div>
+    </section>
+</main>
+<script type="text/javascript" src="/js/music.js"></script>
+<script type="text/javascript" src="/js/nexusSetup.js" </script>
+</script>
 </body>
+
 </html>

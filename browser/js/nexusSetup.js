@@ -6,7 +6,15 @@ nx.onload = function(){
     matrix1.init();
     matrix1.resize($("#Content").width(), 250);
     matrix1.draw();
-    nx.startPulse();
+
+    // drumMatrix.col = 16;
+    // drumMatrix.row = 4;
+    drumMatrix.resize($("#Content").width(), 250);
+    // drumMatrix.matrix = [ [1,0,0,0],[0,1,0,0],[0,0,1,0] ];
+    // drumMatrix.draw();
+    // drumMatrix.init();
+
+    // nx.startPulse();
     // $('#noteController').prepend(createNoteController());
 };
 $(function(){

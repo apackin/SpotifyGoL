@@ -48,6 +48,19 @@ var selectedDrumSamples = {
         2: "drumSamples/Snares/biab_snappy_snare_18.wav",
       }
     };
+  var drums;
+  // createDrumKit(-10, 4);
+
+  function addRow (matId){
+    window[matId].row++;
+    window[matId].draw();
+  }
+  function removeRow (matId){
+    window[matId].row--;
+    window[matId].draw();
+  }
+
+
 
   var numActiveCells = 0;
   var bassAlreadyDropped = false;
@@ -61,7 +74,8 @@ var selectedDrumSamples = {
 
   var loop = new Tone.Sequence(function(time, col){
     var column = matrix1.matrix[col];
-    
+    // matrix1.row++;
+    // console.log('sequencer', matrix1);
 
     for (var i = 0; i < noteNames.length; i++){
       if (column[i] === 1){
@@ -194,14 +208,18 @@ var selectedDrumSamples = {
       kick.triggerAttackRelease("C2", "8n", time);
     }, "2n").start("2m");
 
-  var drums;
-  createDrumKit(-10, 4);
   function createDrumKit(vol, notes){
 
-    matrix2.col = 16;
-    matrix2.row = notes
-    matrix2.resize($("#Content").width(), 250);
-    matrix2.draw();
+    console.log('inFunc', drumMatrix);
+    drumMatrix.col = 16;
+    drumMatrix.row = 4;
+    drumMatrix.resize($("#Content").width(), 250);
+    // <canvas nx="matrix" id="drumMatrix" class="nx" height="500" width="2348" style="width: 1174px; height: 250px;">
+    //             </canvas>
+    // drumMatrix.row = notes
+    // drumMatrix.init();
+    // drumMatrix.resize($("#Content").width(), 250);
+    // drumMatrix.draw();
 
     drums = new Tone.PolySynth(4, Tone.Sampler, selectedDrumSamples, {
       "volume" : vol,
