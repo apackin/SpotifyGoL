@@ -7,7 +7,7 @@ nx.onload = function(){
     matrix1.resize($("#Content").width(), 250);
     matrix1.draw();
     nx.startPulse();
-    $('#noteController').prepend(createNoteController());
+    // $('#noteController').prepend(createNoteController());
 };
 $(function(){
   new Interface.Slider({

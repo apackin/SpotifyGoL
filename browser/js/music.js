@@ -28,40 +28,36 @@ var keyboardNotes = {
   "G1" : "/audio/casio/G2.mp3",
   "G#" : "/audio/casio/Gs1.mp3",
 };
-var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
-  "volume" : 4,
-}).toMaster();
-// What depends on the keys variable?
-// var noteNames = ["G1", "C1", "E1", "G3", "A1", "E1", "D1", "C1"];
+
+var selectedDrumSamples = {
+      "ClosedHat" : { 
+        1: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 005.wav",
+        2 : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 006.wav"
+      },
+      "OpenHat" : { 
+        1: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 005.wav",
+        2 : "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 006.wav"
+      },
+      "Kick" : {
+        1: "drumSamples/Kicks/VES2 Bassdrum 144.wav",
+        2: "drumSamples/Kicks/VES2 Bassdrum 155.wav"
+      },
+
+      "Snare" : {
+        1: "drumSamples/Snares/biab_snappy_snare_10.wav",
+        2: "drumSamples/Snares/biab_snappy_snare_18.wav",
+      }
+    };
 
   var numActiveCells = 0;
   var bassAlreadyDropped = false;
   var numSeqPasses = 0;
 
-  function createNoteController() {
-    var noteSelecters = '';
-    var noteOptions = '';
-
-    for (var notes in keyboardNotes){
-      noteOptions += '<option value="' + notes + '">' + notes + '</option>';
-    }
-
-    noteNames.forEach(function(note, idx, notesArray){
-      noteSelecters += '<select class="NoteSelecter" name="note' + idx +'Ctrl"><option selected disabled>'+ note +'</option>' + noteOptions + '</select>';
-      // make selecter element with options map.noteNames
-    });
-
-    return noteSelecters;
-}
-
-  // other /nonworking/ option
   var keySynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
-    "volume" : 5,
+    "volume" : 3,
   }).toMaster();
-  var noteNames = ["G3", "E3", "D3", "C3", "A3", "G2", "E2", "C2", "C3"];
-  // Should be able to select which instrument and what note. 
-  // var notes = ["A","B","C","D","E","F","G"];
 
+  var noteNames = ["G3", "E3", "D3", "C3", "A3", "G2", "E2", "C2", "C3"];
 
   var loop = new Tone.Sequence(function(time, col){
     var column = matrix1.matrix[col];
@@ -69,9 +65,11 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
 
     for (var i = 0; i < noteNames.length; i++){
       if (column[i] === 1){
-        if(i<5) keySynth.triggerAttackRelease(noteNames[i], "32n", time);
-        else if (i<8) kick.triggerAttackRelease(noteNames[i], "32n", time);
-        else if (i<9) bass.triggerAttackRelease(noteNames[i], "32n", time);
+        if(i<5) keySynth.triggerAttackRelease(noteNames[i], "16n", time);
+        else if (i===5) drums.triggerAttackRelease("ClosedHat.1", "16n", time);
+        else if (i===6) drums.triggerAttackRelease("OpenHat.1", "16n", time);
+        else if (i===7) drums.triggerAttackRelease("Kick.1", "16n", time);
+        else if (i<9) drums.triggerAttackRelease("Snare.2", "16n", time);
 
         numActiveCells++;
       }
@@ -90,7 +88,7 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
 
 
   function endOfRow (bassDropThreshold){
-      function fnCheckLife (){return $('#lifeCheck').is(':checked');}
+      function fnCheckLife (){return $('#lifeCheck').is(':checked')}
       function fnAutoUpbeat (){return $('#bpmIncrease').is(':checked');}
       function fnbassDrop (){return $('#bassDrop').is(':checked');}
 
@@ -182,18 +180,35 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
   /*
    KICK
   //  */
-  var kick = new Tone.DrumSynth({
-    "envelope" : {
-      "sustain" : 0,
-      "attack" : 0.02,
-      "decay" : 0.8
-    },
-    "octaves" : 10
-  }).toMaster();
 
-  var kickPart = new Tone.Loop(function(time){
-    kick.triggerAttackRelease("C2", "8n", time);
-  }, "2n").start("2m");
+    var kick = new Tone.DrumSynth({
+      "envelope" : {
+        "sustain" : 0,
+        "attack" : 0.02,
+        "decay" : 0.8
+      },
+      "octaves" : 10
+    }).toMaster();
+
+    var kickPart = new Tone.Loop(function(time){
+      kick.triggerAttackRelease("C2", "8n", time);
+    }, "2n").start("2m");
+
+  var drums;
+  createDrumKit(-10, 4);
+  function createDrumKit(vol, notes){
+
+    matrix2.col = 16;
+    matrix2.row = notes
+    matrix2.resize($("#Content").width(), 250);
+    matrix2.draw();
+
+    drums = new Tone.PolySynth(4, Tone.Sampler, selectedDrumSamples, {
+      "volume" : vol,
+    }).toMaster();
+
+  }
+
 
 
   // // /*
