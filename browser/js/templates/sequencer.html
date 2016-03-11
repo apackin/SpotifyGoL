@@ -1,5 +1,13 @@
 <h3 id='title'>{{part}}</h3>
-<canvas nx="matrix" id="matrix{{part}}">
-</canvas>
+<div class='col-xs-2'>
+	<div ng-repeat="input in notesInputs track by $index">
+		<select ng-options="note as note for note in noteOptions" ng-model="noteSelected" ng-change="selectedANote({{$index}}, noteSelected)"></select>{{$index}}{{noteSelected}}
+		<input name='octave' type='number' min='1' max='5'></input>
+	</div>
+</div>
+<div class='col-xs-10'>
+	<canvas nx="matrix" id="matrix{{part}}">
+	</canvas>
+</div>
 <button type="button" class="btn btn-success" ng-click="addRow()">Add Note</button>
 <button type="button" class="btn btn-success" ng-click="removeRow()">Remove Note</button>
