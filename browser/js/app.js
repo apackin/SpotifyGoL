@@ -25,15 +25,17 @@ angular.module('myBeatApp', [])
         link: function(scope) {
         	var matId = 'matrix' + scope.part;
         	scope.noteOptions = ['A','B','C','D','E','F','G'];
-        	selectedKeyOctaves = ["3", "3", "3", "3", "3"];
-        	
+
         	scope.notesInputs = [];
 
         	setTimeout(numberOfRows, 500);
 
         	scope.selectedANote = function (idx, note) {
-        		selectedKeyNotes[idx] = note;
-        		console.log(selectedKeyNotes);
+        		selectedLeadNotes[idx] = note;
+        	}
+
+        	scope.selectedAnOption = function (idx, opt) {
+        		selectedLeadOptions[idx] = opt;
         	}
 
      		function numberOfRows () {

@@ -21,20 +21,32 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
 var selectedDrumSamples = {
     "ClosedHat": {
         1: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 005.wav",
-        2: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 006.wav"
+        2: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 006.wav",
+        3: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 007.wav",
+        4: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 008.wav",
+        5: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 009.wav",
     },
     "OpenHat": {
         1: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 005.wav",
-        2: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 006.wav"
+        2: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 006.wav",
+        3: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 014.wav",
+        4: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 016.wav",
+        5: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 017.wav",
     },
     "Kick": {
         1: "drumSamples/Kicks/VES2 Bassdrum 144.wav",
-        2: "drumSamples/Kicks/VES2 Bassdrum 155.wav"
+        2: "drumSamples/Kicks/VES2 Bassdrum 079.wav",
+        3: "drumSamples/Kicks/VES2 Bassdrum 101.wav",
+        4: "drumSamples/Kicks/VES2 Bassdrum 121.wav",
+        5: "drumSamples/Kicks/VES2 Bassdrum 155.wav",
     },
 
     "Snare": {
-        1: "drumSamples/Snares/biab_snappy_snare_10.wav",
-        2: "drumSamples/Snares/biab_snappy_snare_18.wav",
+        1: "drumSamples/Snares/biab_snappy_snare_3.wav",
+        2: "drumSamples/Snares/biab_snappy_snare_5.wav",
+        3: "drumSamples/Snares/biab_snappy_snare_10.wav",
+        4: "drumSamples/Snares/biab_snappy_snare_14.wav",
+        5: "drumSamples/Snares/biab_snappy_snare_18.wav",
     }
 };
 
@@ -48,8 +60,8 @@ var keySynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
     "volume": 3,
 }).toMaster();
 
-var selectedKeyNotes = ["G", "E", "D", "C", "A"];
-var selectedKeyOctaves = ["3", "3", "3", "3", "3"];
+var selectedLeadNotes = ["G", "E", "D", "C", "A"];
+var selectedLeadOptions = ["3", "3", "3", "3", "3"];
 
 var loop = new Tone.Sequence(function(time, col) {
     funcTriggerNotes(matrixLead, time, col);
@@ -71,7 +83,7 @@ function funcTriggerNotes (matrixPlaying, time, col){
 
     for (var i = 0; i < column.length; i++) {
         if (column[i] === 1) {
-            keySynth.triggerAttackRelease(selectedKeyNotes[i]+selectedKeyOctaves[i], "16n", time);
+            keySynth.triggerAttackRelease(selectedLeadNotes[i]+selectedLeadOptions[i], "16n", time);
         }
     }
 }
