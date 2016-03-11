@@ -13,59 +13,52 @@ var keyboardNotes = {
     "G#": "/audio/casio/Gs1.mp3",
 };
 
-// // DO NOT DELETE!! This allows the loader to close...
+// // DO NOT DELETE!! This allows the loader to close but idk why...
 var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
     "volume": 4,
 }).toMaster();
 
 var selectedDrumSamples = {
-    "ClosedHat": {
-        1: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 005.wav",
-        2: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 006.wav",
-        3: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 007.wav",
-        4: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 008.wav",
-        5: "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 009.wav",
-    },
-    "OpenHat": {
-        1: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 005.wav",
-        2: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 006.wav",
-        3: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 014.wav",
-        4: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 016.wav",
-        5: "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 017.wav",
-    },
-    "Kick": {
-        1: "drumSamples/Kicks/VES2 Bassdrum 144.wav",
-        2: "drumSamples/Kicks/VES2 Bassdrum 079.wav",
-        3: "drumSamples/Kicks/VES2 Bassdrum 101.wav",
-        4: "drumSamples/Kicks/VES2 Bassdrum 121.wav",
-        5: "drumSamples/Kicks/VES2 Bassdrum 155.wav",
-    },
-
-    "Snare": {
-        1: "drumSamples/Snares/biab_snappy_snare_3.wav",
-        2: "drumSamples/Snares/biab_snappy_snare_5.wav",
-        3: "drumSamples/Snares/biab_snappy_snare_10.wav",
-        4: "drumSamples/Snares/biab_snappy_snare_14.wav",
-        5: "drumSamples/Snares/biab_snappy_snare_18.wav",
-    }
+    "ClosedHat1" : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 005.wav",
+    "ClosedHat2" : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 006.wav",
+    "ClosedHat3" : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 007.wav",
+    "ClosedHat4" : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 008.wav",
+    "ClosedHat5" : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 009.wav",
+    "OpenHat1" : "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 005.wav",
+    "OpenHat2" : "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 006.wav",
+    "OpenHat3" : "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 014.wav",
+    "OpenHat4" : "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 016.wav",
+    "OpenHat5" : "drumSamples/Hi Hats/Open Hi Hats/VES2 Open Hihat 017.wav",
+    "Kick1" : "drumSamples/Kicks/VES2 Bassdrum 144.wav",
+    "Kick2" : "drumSamples/Kicks/VES2 Bassdrum 079.wav",
+    "Kick3" : "drumSamples/Kicks/VES2 Bassdrum 101.wav",
+    "Kick4" : "drumSamples/Kicks/VES2 Bassdrum 121.wav",
+    "Kick5" : "drumSamples/Kicks/VES2 Bassdrum 155.wav",
+    "Snare1": "drumSamples/Snares/biab_snappy_snare_3.wav",
+    "Snare2": "drumSamples/Snares/biab_snappy_snare_5.wav",
+    "Snare3": "drumSamples/Snares/biab_snappy_snare_10.wav",
+    "Snare4": "drumSamples/Snares/biab_snappy_snare_14.wav",
+    "Snare5": "drumSamples/Snares/biab_snappy_snare_18.wav",
 };
 
-var drums = new Tone.PolySynth(4, Tone.Sampler, selectedDrumSamples, {
+var DrumSynth = new Tone.PolySynth(4, Tone.Sampler, selectedDrumSamples, {
     "volume": -4,
 }).toMaster();
 
 var numSeqPasses = 0;
 
-var keySynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
+var LeadSynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
     "volume": 3,
 }).toMaster();
 
-var selectedLeadNotes = ["G", "E", "D", "C", "A"];
+var selectedLeadNotes = ["G", "E", "D", "C", "A", "B", "F"];
 var selectedLeadOptions = ["3", "3", "3", "3", "3"];
+var selectedDrumNotes = ["ClosedHat", "OpenHat", "Kick", "Snare", "Kick"];
+var selectedDrumOptions = ["3", "3", "3", "3", "3"];
 
 var loop = new Tone.Sequence(function(time, col) {
-    funcTriggerNotes(matrixLead, time, col);
-    funcTriggerNotes(matrixDrum, time, col);
+    funcTriggerNotes(matrixLead, 'Lead', time, col);
+    funcTriggerNotes(matrixDrum, 'Drum', time, col);
     // funcTriggerNotes(matrixBass, time, col);
 
     if (col === 15) {
@@ -78,12 +71,13 @@ var loop = new Tone.Sequence(function(time, col) {
 
 }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
-function funcTriggerNotes (matrixPlaying, time, col){
+function funcTriggerNotes (matrixPlaying, part, time, col){
     var column = matrixPlaying.matrix[col];
 
     for (var i = 0; i < column.length; i++) {
         if (column[i] === 1) {
-            keySynth.triggerAttackRelease(selectedLeadNotes[i]+selectedLeadOptions[i], "16n", time);
+            var synth = window[part+'Synth'];
+            synth.triggerAttackRelease(window['selected'+part+'Notes'][i]+window['selected'+part+'Options'][i], "16n", time);
         }
     }
 }

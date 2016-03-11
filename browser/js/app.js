@@ -24,18 +24,18 @@ angular.module('myBeatApp', [])
         },
         link: function(scope) {
         	var matId = 'matrix' + scope.part;
-        	scope.noteOptions = ['A','B','C','D','E','F','G'];
+        	scope.noteOptions = window['selected'+scope.part+'Notes'];
 
         	scope.notesInputs = [];
 
         	setTimeout(numberOfRows, 500);
 
         	scope.selectedANote = function (idx, note) {
-        		selectedLeadNotes[idx] = note;
+        		window['selected'+scope.part+'Notes'][idx] = note;
         	}
 
         	scope.selectedAnOption = function (idx, opt) {
-        		selectedLeadOptions[idx] = opt;
+        		window['selected'+scope.part+'Options'][idx] = opt;
         	}
 
      		function numberOfRows () {
