@@ -18,6 +18,8 @@ var keys = new Tone.PolySynth(4, Tone.Sampler, keyboardNotes, {
     "volume": 4,
 }).toMaster();
 
+/////////////////////////////////////////////////////
+
 var selectedDrumSamples = {
     "ClosedHat1" : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 005.wav",
     "ClosedHat2" : "drumSamples/Hi Hats/Closed Hi Hats/VES2 Closed Hihat 006.wav",
@@ -45,21 +47,42 @@ var DrumSynth = new Tone.PolySynth(4, Tone.Sampler, selectedDrumSamples, {
     "volume": -4,
 }).toMaster();
 
-var numSeqPasses = 0;
 
 var LeadSynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
     "volume": 3,
+}).toMaster();
+
+var BassSynth = new Tone.MonoSynth({
+    "volume": -4,
+    "envelope": {
+        "attack": 0.1,
+        "decay": 0.3,
+        "release": 2,
+    },
+    "filterEnvelope": {
+        "attack": 0.001,
+        "decay": 0.01,
+        "sustain": 0.5,
+        "baseFrequency": 100,
+        "octaves": 2.6
+    }
 }).toMaster();
 
 var selectedLeadNotes = ["G", "E", "D", "C", "A", "B", "F"];
 var selectedLeadOptions = ["3", "3", "3", "3", "3"];
 var selectedDrumNotes = ["ClosedHat", "OpenHat", "Kick", "Snare", "Kick"];
 var selectedDrumOptions = ["3", "3", "3", "3", "3"];
+var selectedBassNotes = ["G", "E", "D", "C", "A", "B", "F"];
+var selectedBassOptions = ["3", "2", "2", "2", "3"];
+
+
+
+var numSeqPasses = 0;
 
 var loop = new Tone.Sequence(function(time, col) {
     funcTriggerNotes(matrixLead, 'Lead', time, col);
     funcTriggerNotes(matrixDrum, 'Drum', time, col);
-    // funcTriggerNotes(matrixBass, time, col);
+    funcTriggerNotes(matrixBass, 'Bass', time, col);
 
     if (col === 15) {
         numSeqPasses++;
@@ -67,7 +90,7 @@ var loop = new Tone.Sequence(function(time, col) {
 
     realignView (matrixLead);
     realignView (matrixDrum);
-    // realignView (matrixBass);
+    realignView (matrixBass);
 
 }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
@@ -146,28 +169,13 @@ function endOfRow(bassDropThreshold) {
 
 /*
  BASS
-//  
-var bass = new Tone.MonoSynth({
-    "volume": -3,
-    "envelope": {
-        "attack": 0.1,
-        "decay": 0.3,
-        "release": 2,
-    },
-    "filterEnvelope": {
-        "attack": 0.001,
-        "decay": 0.01,
-        "sustain": 0.5,
-        "baseFrequency": 100,
-        "octaves": 2.6
-    }
-}).toMaster();
+/*/  
 
-var bassPart = new Tone.Sequence(function(time, note) {
-    bass.triggerAttackRelease(note, "16n", time);
-}, ["C2", ["C3", ["C3", "D2"]], "E2", ["D2", "A1"]]).start();
+// var bassPart = new Tone.Sequence(function(time, note) {
+//     bass.triggerAttackRelease(note, "16n", time);
+// }, ["C2", ["C3", ["C3", "D2"]], "E2", ["D2", "A1"]]).start();
 
-var notes = ["A", "B", "C", "D", "E", "F", "G"];
+// var notes = ["A", "B", "C", "D", "E", "F", "G"];
 
 /*
  KICK
