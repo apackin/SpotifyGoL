@@ -4,6 +4,8 @@ angular.module('myBeatApp', [])
     $scope.a = 1;
     $scope.b = 2;
     $scope.parts = ['Drum', 'Bass', 'Lead'];
+
+
 })
 
 .directive('header', function() {
@@ -21,19 +23,20 @@ angular.module('myBeatApp', [])
         	part: "="
         },
         link: function(scope) {
-        	scope.canvasId = 'matrix' + scope.part;
+        	var matId = 'matrix' + scope.part;
+        	// var currentMatrix = window[matId];
+
 	        scope.addRow = function () {
-		    	console.log(canvasId);
 		        window[matId].row++;
 		        window[matId].draw();
 		    }
 
 		    scope.removeRow = function () {
-
-		    	console.log(canvasId);
 		        window[matId].row--;
 		        window[matId].draw();
 		    }
+
+
         }
     };
 

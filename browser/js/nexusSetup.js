@@ -1,12 +1,13 @@
 nx.onload = function(){
-    nx.colorize("#f5871f");
+    [matrixLead, matrixDrum, matrixBass].forEach(matrix => 
+      {matrix.col = 16;
+      matrix.row = 5;
+      matrix.init();
+      matrix.resize($("#Content").width(), 250);
+      matrix.draw();
+    });
 
-    matrixLead.col = 16;
-    matrixLead.row = noteNames.length;
-    matrixLead.init();
-    matrixLead.resize($("#Content").width(), 250);
-    matrixLead.draw();
-    nx.startPulse();
+      nx.startPulse();
 };
 $(function(){
   new Interface.Slider({
