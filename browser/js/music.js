@@ -53,19 +53,6 @@ var selectedDrumSamples = {
     }
 };
 var drums;
-// createDrumKit(-10, 4);
-
-function addRow(matId) {
-    window[matId].row++;
-    window[matId].draw();
-}
-
-function removeRow(matId) {
-    window[matId].row--;
-    window[matId].draw();
-}
-
-
 
 var numActiveCells = 0;
 var bassAlreadyDropped = false;
@@ -75,36 +62,52 @@ var keySynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
     "volume": 3,
 }).toMaster();
 
-var noteNames = ["G3", "E3", "D3", "C3", "A3", "G2", "E2", "C2", "C3"];
+var selectedKeyNotes = ["G3", "E3", "D3", "C3", "A3", "G2", "E2", "C2", "C3"];
 
 var loop = new Tone.Sequence(function(time, col) {
-    var column = matrix1.matrix[col];
-    // matrix1.row++;
-    // console.log('sequencer', matrix1);
+    funcTriggerNotes(matrixLead, time, col);
+    // funcTriggerNotes(matrixDrum, time, col);
+    // funcTriggerNotes(matrixBass, time, col);
 
-    for (var i = 0; i < noteNames.length; i++) {
-        if (column[i] === 1) {
-            if (i < 5) keySynth.triggerAttackRelease(noteNames[i], "16n", time);
-            else if (i === 5) drums.triggerAttackRelease("ClosedHat.1", "16n", time);
-            else if (i === 6) drums.triggerAttackRelease("OpenHat.1", "16n", time);
-            else if (i === 7) drums.triggerAttackRelease("Kick.1", "16n", time);
-            else if (i === 8) drums.triggerAttackRelease("Snare.2", "16n", time);
+    // console.log('sequencer', matrixLead);
 
-            numActiveCells++;
-        }
-    }
+    // for (var i = 0; i < column.length; i++) {
+    //     if (column[i] === 1) {
+    //         keySynth.triggerAttackRelease(selectedKeyNotes[i], "16n", time);
+    //         // else if (i === 5) drums.triggerAttackRelease("ClosedHat.1", "16n", time);
+    //         // else if (i === 6) drums.triggerAttackRelease("OpenHat.1", "16n", time);
+    //         // else if (i === 7) drums.triggerAttackRelease("Kick.1", "16n", time);
+    //         // else if (i === 8) drums.triggerAttackRelease("Snare.2", "16n", time);
+
+    //         numActiveCells++;
+    //     }
+    // }
     if (col === 15) {
         numSeqPasses++;
-        console.log(col);
-        console.log(Tone.Transport.bpm.value);
-        endOfRow(30);
-        numActiveCells = 0;
+        // console.log(col);
+        // console.log(Tone.Transport.bpm.value);
+        // endOfRow(30);
+        // numActiveCells = 0;
     }
-    matrix1.stop();
-    matrix1.sequence(Tone.Transport.bpm.value * 4);
+
+    realignView (matrixLead);
 
 }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
+function funcTriggerNotes (matrixPlaying, time, col){
+    var column = matrixPlaying.matrix[col];
+
+    for (var i = 0; i < column.length; i++) {
+        if (column[i] === 1) {
+            keySynth.triggerAttackRelease(selectedKeyNotes[i], "16n", time);
+        }
+    }
+}
+
+function realignView (matrixPlaying) {
+    matrixPlaying.stop();
+    matrixPlaying.sequence(Tone.Transport.bpm.value * 4);
+}
 
 function endOfRow(bassDropThreshold) {
     function fnCheckLife() {
@@ -116,7 +119,7 @@ function endOfRow(bassDropThreshold) {
     function fnbassDrop() {
         return $('#bassDrop').is(':checked'); }
 
-    if (fnCheckLife()) matrix1.life();
+    if (fnCheckLife()) matrixLead.life();
 
     if (numActiveCells > bassDropThreshold) {
         if (!bassAlreadyDropped) {
@@ -149,7 +152,7 @@ function makeCellsLive(chance) {
     for (var i = 0; i < 8; i++) {
         for (var j = 0; j < 16; j++) {
             if (Math.random() < chance)
-                matrix1.setCell(j, i, true);
+                matrixLead.setCell(j, i, true);
         }
     }
 }
@@ -178,28 +181,28 @@ var bassPart = new Tone.Sequence(function(time, note) {
 
 var notes = ["A", "B", "C", "D", "E", "F", "G"];
 
-bassFunc = function() {
-    // bassPart.at(0, "D5");
-    var octiveShift = Math.floor(Math.random() * 3) - 1;
-    var baseNote = 2 + Math.floor(Math.random() * 2);
-    bassPart.at(0, notes[baseNote] + (2 + octiveShift));
-    bassPart.at(1).at(0, notes[baseNote] + (3 + octiveShift));
+// bassFunc = function() {
+//     // bassPart.at(0, "D5");
+//     var octiveShift = Math.floor(Math.random() * 3) - 1;
+//     var baseNote = 2 + Math.floor(Math.random() * 2);
+//     bassPart.at(0, notes[baseNote] + (2 + octiveShift));
+//     bassPart.at(1).at(0, notes[baseNote] + (3 + octiveShift));
 
-    // bassPart.at(1).at(1).at(0, notes[baseNote] + (3+octiveShift));
-    // bassPart.at(1).at(1).at(1, notes[baseNote+1] + (2+octiveShift));
+//     // bassPart.at(1).at(1).at(0, notes[baseNote] + (3+octiveShift));
+//     // bassPart.at(1).at(1).at(1, notes[baseNote+1] + (2+octiveShift));
 
-    bassPart.at(2, notes[baseNote + 2] + (2 + octiveShift));
-    bassPart.at(3).at(0, notes[baseNote + 1] + (2 + octiveShift));
-    bassPart.at(3).at(1, notes[baseNote - 2] + (1 + octiveShift));
-};
+//     bassPart.at(2, notes[baseNote + 2] + (2 + octiveShift));
+//     bassPart.at(3).at(0, notes[baseNote + 1] + (2 + octiveShift));
+//     bassPart.at(3).at(1, notes[baseNote - 2] + (1 + octiveShift));
+// };
 
-bassDropFunc = function() {
-    bassPart.at(0, ["C2", "C3", "C2"]);
-    bassPart.at(1, ["D2", "E2", "D2", "C2"]);
-    bassPart.at(2, ["C2", "C1"]);
-    bassPart.at(3, ["D2", "E2", "D2", "C2"]);
-    funcHat();
-};
+// bassDropFunc = function() {
+//     bassPart.at(0, ["C2", "C3", "C2"]);
+//     bassPart.at(1, ["D2", "E2", "D2", "C2"]);
+//     bassPart.at(2, ["C2", "C1"]);
+//     bassPart.at(3, ["D2", "E2", "D2", "C2"]);
+//     funcHat();
+// };
 
 /*
  KICK
@@ -218,18 +221,18 @@ var kickPart = new Tone.Loop(function(time) {
     kick.triggerAttackRelease("C2", "8n", time);
 }, "2n").start("2m");
 
-function createMatrix(vol, notes) {
+function createDrumKit(vol, notes) {
 
-    console.log('inFunc', drumMatrix);
-    drumMatrix.col = 16;
-    drumMatrix.row = 4;
-    drumMatrix.resize($("#Content").width(), 250);
-    // <canvas nx="matrix" id="drumMatrix" class="nx" height="500" width="2348" style="width: 1174px; height: 250px;">
+    console.log('inFunc', matrixDrum);
+    matrixDrum.col = 16;
+    matrixDrum.row = 4;
+    matrixDrum.resize($("#Content").width(), 250);
+    // <canvas nx="matrix" id="matrixDrum" class="nx" height="500" width="2348" style="width: 1174px; height: 250px;">
     //             </canvas>
-    // drumMatrix.row = notes
-    // drumMatrix.init();
-    // drumMatrix.resize($("#Content").width(), 250);
-    // drumMatrix.draw();
+    // matrixDrum.row = notes
+    // matrixDrum.init();
+    // matrixDrum.resize($("#Content").width(), 250);
+    // matrixDrum.draw();
 
     drums = new Tone.PolySynth(4, Tone.Sampler, selectedDrumSamples, {
         "volume": vol,

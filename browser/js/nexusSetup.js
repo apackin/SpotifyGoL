@@ -1,12 +1,13 @@
 nx.onload = function(){
-    nx.colorize("#f5871f");
+    [matrixLead, matrixDrum, matrixBass].forEach(matrix => 
+      {matrix.col = 16;
+      matrix.row = 5;
+      matrix.init();
+      matrix.resize($("#Content").width(), 250);
+      matrix.draw();
+    });
 
-    matrix1.col = 16;
-    matrix1.row = noteNames.length;
-    matrix1.init();
-    matrix1.resize($("#Content").width(), 250);
-    matrix1.draw();
-    nx.startPulse();
+      nx.startPulse();
 };
 $(function(){
   new Interface.Slider({
@@ -29,7 +30,7 @@ $(function(){
       loop.start();
     },
     end : function(){
-      matrix1.stop();
+      matrixLead.stop();
       Tone.Transport.stop();
       stopBlink();
     },
@@ -37,7 +38,7 @@ $(function(){
 
   Interface.Loader();
   $(window).on("resize", function(){
-    matrix1.resize($("#Content").width(), 250);
-    matrix1.draw();
+    matrixLead.resize($("#Content").width(), 250);
+    matrixLead.draw();
   });
 });
