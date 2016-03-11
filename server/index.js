@@ -5,7 +5,7 @@ var express = require('express'),
 
 	require('./configure')(app);
 
-app.set('port', (process.env.PORT || 1337));
+app.set('port', (process.env.PORT || 8080));
 
 app.get('/', function(req, res){
     res.sendfile(path.join(__dirname, '../browser'));
