@@ -2,3 +2,4 @@ node_modules/
 browser/sass/.sass-cache
 **/*.map
 npm-debug.log
+public
