@@ -32,7 +32,6 @@ $(function(){
     end : function(){
       matrixLead.stop();
       Tone.Transport.stop();
-      stopBlink();
     },
   });
 
