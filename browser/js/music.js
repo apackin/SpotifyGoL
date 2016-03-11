@@ -78,9 +78,9 @@ var keySynth = new Tone.PolySynth(6, Tone.SimpleSynth, {
 var noteNames = ["G3", "E3", "D3", "C3", "A3", "G2", "E2", "C2", "C3"];
 
 var loop = new Tone.Sequence(function(time, col) {
-    var column = matrix1.matrix[col];
-    // matrix1.row++;
-    // console.log('sequencer', matrix1);
+    var column = matrixLead.matrix[col];
+    // matrixLead.row++;
+    // console.log('sequencer', matrixLead);
 
     for (var i = 0; i < noteNames.length; i++) {
         if (column[i] === 1) {
@@ -100,8 +100,8 @@ var loop = new Tone.Sequence(function(time, col) {
         endOfRow(30);
         numActiveCells = 0;
     }
-    matrix1.stop();
-    matrix1.sequence(Tone.Transport.bpm.value * 4);
+    matrixLead.stop();
+    matrixLead.sequence(Tone.Transport.bpm.value * 4);
 
 }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
@@ -116,7 +116,7 @@ function endOfRow(bassDropThreshold) {
     function fnbassDrop() {
         return $('#bassDrop').is(':checked'); }
 
-    if (fnCheckLife()) matrix1.life();
+    if (fnCheckLife()) matrixLead.life();
 
     if (numActiveCells > bassDropThreshold) {
         if (!bassAlreadyDropped) {
@@ -149,7 +149,7 @@ function makeCellsLive(chance) {
     for (var i = 0; i < 8; i++) {
         for (var j = 0; j < 16; j++) {
             if (Math.random() < chance)
-                matrix1.setCell(j, i, true);
+                matrixLead.setCell(j, i, true);
         }
     }
 }
