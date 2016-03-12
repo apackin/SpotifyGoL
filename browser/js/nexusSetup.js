@@ -37,7 +37,8 @@ $(function(){
 
   Interface.Loader();
   $(window).on("resize", function(){
-    matrixLead.resize($("#Content").width(), 250);
-    matrixLead.draw();
+    [matrixLead, matrixDrum, matrixBass].forEach(matrix => 
+      {matrix.resize($("#Content").width(), $("#Content").width()/10);
+       matrix.draw();})
   });
 });

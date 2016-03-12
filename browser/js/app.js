@@ -24,7 +24,8 @@ angular.module('myBeatApp', [])
         },
         link: function(scope) {
         	var matId = 'matrix' + scope.part;
-        	scope.noteOptions = window['selected'+scope.part+'Notes'];
+        	var noteOptions = window['selected'+scope.part+'Notes'].slice();
+        	scope.noteOptions = noteOptions;
 
         	scope.notesInputs = [];
 
