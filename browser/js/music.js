@@ -70,7 +70,7 @@ var BassSynth = new Tone.MonoSynth({
 
 var selectedLeadNotes = ["G", "E", "D", "C", "A", "B", "F"];
 var selectedLeadOptions = ["3", "3", "3", "3", "3"];
-var selectedDrumNotes = ["ClosedHat", "OpenHat", "Kick", "Snare", "Kick"];
+var selectedDrumNotes = ["ClosedHat", "OpenHat", "Kick", "Snare"];
 var selectedDrumOptions = ["3", "3", "3", "3", "3"];
 var selectedBassNotes = ["G", "E", "D", "C", "A", "B", "F"];
 var selectedBassOptions = ["3", "2", "2", "2", "3"];
@@ -86,11 +86,12 @@ var loop = new Tone.Sequence(function(time, col) {
 
     if (col === 15) {
         numSeqPasses++;
+        realignView (matrixLead);
+        realignView (matrixDrum);
+        realignView (matrixBass);
     }
 
-    realignView (matrixLead);
-    realignView (matrixDrum);
-    realignView (matrixBass);
+
 
 }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
 
@@ -103,11 +104,14 @@ function funcTriggerNotes (matrixPlaying, part, time, col){
             synth.triggerAttackRelease(window['selected'+part+'Notes'][i]+window['selected'+part+'Options'][i], "16n", time);
         }
     }
+    matrixPlaying.place = col;
 }
 
 function realignView (matrixPlaying) {
-    matrixPlaying.stop();
-    matrixPlaying.sequence(Tone.Transport.bpm.value * 4);
+    // matrixPlaying.stop();
+    // setTimeout(
+    matrixPlaying.sequence(Tone.Transport.bpm.value * 4)
+    // , 100);
 }
 
 

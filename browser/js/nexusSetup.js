@@ -1,7 +1,7 @@
 nx.onload = function(){
     [matrixLead, matrixDrum, matrixBass].forEach(matrix => 
       {matrix.col = 16;
-      matrix.row = 5;
+      matrix.row = 4;
       matrix.init();
       matrix.resize($("#Content").width()/1.3, $("#Content").width()/10);
       matrix.draw();
@@ -30,8 +30,9 @@ $(function(){
       loop.start();
     },
     end : function(){
-      matrixLead.stop();
       Tone.Transport.stop();
+      [matrixLead, matrixDrum, matrixBass].forEach(matrix => 
+      {matrix.stop()});
     },
   });
 
@@ -42,3 +43,7 @@ $(function(){
        matrix.draw();})
   });
 });
+
+function matrixes (iterators) {
+
+}

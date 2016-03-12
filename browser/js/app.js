@@ -55,16 +55,17 @@ angular.module('myBeatApp', [])
      		}
 
 	        scope.addRow = function () {
-	        	console.log(selectedDrumSamples);
 		        window[matId].row++;
 		        window[matId].draw();
 		        addSelector();
+                // window[matId]resize($("#Content").width()/1.3, $("#Content").width()/10);
 		    }
 
 		    scope.removeRow = function () {
 		        window[matId].row--;
 		        window[matId].draw();
 		        removeSelector();
+                // window[matId]resize($("#Content").width()/1.3, $("#Content").width()/10);
 		    }
 
 
